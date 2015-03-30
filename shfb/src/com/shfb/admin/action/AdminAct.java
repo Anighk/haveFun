@@ -122,6 +122,15 @@ public class AdminAct {
 		return Constant.VIEW_PATH+"admin/emember.html";
 	}
 	
+	@RequestMapping("/toMember_view.do")
+	public String toＶiewMember(HttpServletRequest request,ModelMap modelMap){
+		String userid=request.getParameter("user_id");
+		String strWhere=" user_id='"+userid+"'";
+		MemberDTO dto=adminService.findUsers(strWhere, 1, 1);
+		modelMap.addAttribute("info",dto.getmList().get(0));
+		return Constant.VIEW_PATH+"admin/member_view.html";
+	}
+	
 	@RequestMapping("/toRenew.do")
 	public String toRenew(HttpServletRequest request,ModelMap modelMap){
 		String userid=request.getParameter("user_id");

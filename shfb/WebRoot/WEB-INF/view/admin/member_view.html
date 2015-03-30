@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="thirdparty/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script  src="js/jquery.min.js"></script>
+    <script src="thirdparty/bootstrap/js/bootstrap.min.js"></script>
+    <script src="thirdparty/layer/layer.min.js"></script>
+    <script src="js/citylist.js"></script>
+    <script>
+        function cancelBtn(){
+            var index=parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        }
+    </script>
+    <title>用户信息</title>
+</head>
+<body>
+    <div class="panel panel-info no_margin-bottom">
+        <div class="panel-heading">基础信息</div>
+        <div class="panel-body panel_body">
+            <ul class="list-unstyled list-inline">
+                <li class="li_title"><label>机器码：</label></li><li>${info.user_id}</li>
+            </ul >
+            <ul class="list-unstyled list-inline"><li class="li_title"><label>过期时间：</label></li><li><#if info.overdue_date?exists>${info.overdue_date?string("yyyy-MM-dd")}</#if></li></ul>
+            <ul class="list-unstyled list-inline"><li class="li_title"><label>用户名：</label></li><li>${info.nick_name}</li></ul>
+            <ul class="list-unstyled list-inline"><li class="li_title"><label>vip会员：</label></li><li><span class="glyphicon glyphicon-<#if info.isvip=='1'>ok<#else>remove</#if>"></span></li></ul>
+            <ul class="list-unstyled list-inline">
+                <li class="li_title"><label>销售经理：</label></li>
+                <li>${(info.sales_manager)!''}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">详细信息</div>
+        <div class="panel-body panel_body">
+                <ul class="list-unstyled list-inline">
+                    <li class="li_title"><label>省份：</label></li>
+                    <li>${(info.province)!''}</li>
+                </ul>
+                <ul class="list-unstyled list-inline">
+                    <li class="li_title"><label>城市：</label>
+                    <li>${(info.city)!''}</li>
+                </ul>
+                <ul class="list-unstyled list-inline">
+                    <li class="li_title"><label>所属单位：</label></li>
+                    <li>${(info.company)!''}</li>
+                </ul>
+                <ul class="list-unstyled list-inline">
+                    <li class="li_title"><label>职务：</label></li>
+                    <li>${(info.job_title)!''}</li>
+                </ul>
+                <ul class="list-unstyled list-inline">
+                    <li class="li_title"><label>联系人：</label></li>
+                    <li>${(info.contacts)!''}</li>
+                </ul>
+                <ul class="list-unstyled list-inline">
+                    <li class="li_title"><label>联系电话：</label></li>
+                    <li>${(info.tel)!''}</li>
+                </ul>
+                <ul class="list-unstyled list-inline">
+                    <li class="li_title"><label>QQ：</label></li>
+                    <li>${(info.qq)!''}</li>
+                </ul>
+                <ul class="list-unstyled list-inline">
+                    <li class="li_title"><label>设备：</label></li>
+                    <li>${(info.equipment)!''}</li>
+                </ul>
+                <ul class="list-unstyled list-inline">
+                    <li class="li_title"><label>备注：</label></li>
+                    <li>${(info.remark)!''}</li>
+                </ul>
+        </div>
+    </div>
+    <div class="fr footer_btns">
+        <a class="btn btn-primary footer_btn" href="javascript:cancelBtn();" role="button">确定</a>
+        <a class="btn btn-default footer_btn" href="javascript:cancelBtn();" role="button">取消</a>
+    </div>
+</body>
+</html>
