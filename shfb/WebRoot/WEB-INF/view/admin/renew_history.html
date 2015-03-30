@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="thirdparty/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="thirdparty/bootstrap/js/bootstrap.min.js"></script>
+    <script src="thirdparty/layer/layer.min.js"></script>
+      <script>
+        function cancelBtn(){
+            var index=parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        }
+    </script>
+    <title>历史续费信息</title>
+</head>
+<body>
+<#include "/WEB-INF/ftl/macro.ftl">
+<div class="container-fluid history_table">
+    <table class="table">
+        <thead class="table-bordered table_header">
+        <tr>
+            <th>序号</th>
+            <th>机器码</th>
+            <th>续费时间</th>
+            <th>续费年限</th>
+            <th>续费至</th>
+            <th>备注</th>
+        </tr>
+        </thead>
+        <tbody>
+        <#list List as info>
+        <tr>
+            <td>${info.id}</td>
+            <td>${info.user_id}</td>
+            <td><#if info.renew_date?exists>${info.renew_date?string("yyyy-MM-dd")}</#if></td>
+            <td>${(info.renew_year)!''}</td>
+            <td><#if info.renew_to?exists>${info.renew_to?string("yyyy-MM-dd")}</#if></td>
+            <td></td>
+        </tr>
+        </#list>
+        </tbody>
+    </table>
+    <@Pagination/>
+</div>
+
+<div class="fr footer_btns">
+    <a class="btn btn-primary footer_btn" href="javascript:cancelBtn();" role="button">确定</a>
+    <a class="btn btn-default footer_btn" href="javascript:cancelBtn();" role="button">取消</a>
+</div>
+</body>
+</html>

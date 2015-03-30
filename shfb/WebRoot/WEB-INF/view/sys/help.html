@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>帮助中心</title>
+	
+    
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="帮助中心">
+    <link rel="stylesheet" type="text/css" href="css/foot.css">
+     <link href="css/style_zl.css" rel="Stylesheet" type="text/css" />
+    <link href="css/pub.css" rel="Stylesheet" type="text/css">
+        <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="js/excanvas.min.js"></script><![endif]-->
+   <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+   <script type="text/javascript" src="layer/layer.min.js"></script>
+  <script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript">
+
+	</script>
+  </head>
+  
+  <body >
+<#include "/WEB-INF/ftl/nav.ftl">
+<#include "/WEB-INF/ftl/macro.ftl">
+	<div class="mconnect">
+	<div class="con_border">
+    <div class="con_left">
+      <div class="con_menuh">检索</div>
+      <div class="con_menu1"><a href="javascript:void(0)" onclick="document.getElementById('zl1').scrollIntoView();">快速检索</a></div>
+      <div class="con_menu1"><a href="javascript:void(0)" onclick="document.getElementById('zl2').scrollIntoView();">高级检索</a></div>
+      <div class="con_menu1"><a href="javascript:void(0)" onclick="document.getElementById('zl3').scrollIntoView();">分类检索</a></div>
+      <div class="con_menu1"><a href="javascript:void(0)" onclick="document.getElementById('zl4').scrollIntoView();">IPC/CPC检索</a></div>
+      <div class="con_menu1"><a href="javascript:void(0)" onclick="document.getElementById('zl5').scrollIntoView();">引证文献检索</a></div>
+      <div class="con_menu1"><a href="javascript:void(0)" onclick="document.getElementById('zl6').scrollIntoView();">同族检索</a></div>
+      <div class="con_menu1"><a href="javascript:void(0)" onclick="document.getElementById('zl7').scrollIntoView();">法律状态检索</a></div>
+      <div class="con_menu1"><a href="javascript:void(0)" onclick="document.getElementById('zl8').scrollIntoView();">二次检索</a></div>
+      <div class="con_menu1"><a href="javascript:void(0)" onclick="document.getElementById('zl9').scrollIntoView();">公司代码检索</a></div>
+      <div class="con_menu1"><a href="javascript:void(0)" onclick="document.getElementById('zl10').scrollIntoView();">同义词扩展</a></div>
+	 <div class="con_menuh">分析</div>
+      <div class="con_menu1"><a href="javascript:void(0)" onclick="document.getElementById('fx1').scrollIntoView();">分析范围</a></div>
+      <div class="con_menu1"><a href="javascript:void(0)" onclick="document.getElementById('fx2').scrollIntoView();">分析展示</a></div>
+      <div class="con_menu1"><a href="javascript:void(0)" onclick="document.getElementById('fx3').scrollIntoView();">分析列表</a></div>
+      <div class="con_menu1"><a href="toTest.do">测试</a></div>
+    </div>
+  <div class="con_right">
+ 	      <div class="title">检索</div>
+     <!--  <p><strong class="c1">本协议由您与北京中献智慧知识产权咨询有限公司共同缔结，本协议具有合同效力。</strong></p> --> 
+      <p class="c2">IE浏览器支持IE9以上版本。</p>
+     <div id="zl1"> <p><strong>1.1	快速检索</strong></p></div>
+      <p> 
+1.	默认对中国专利进行检索。</p><p>
+2. 如果没有勾选任何专利类型，默认对所有类型进行检索。</p><p>
+3.	可检索数据项包括：公告号、申请号、公告日、申请日、分类号、国省、名称、摘要、地址、代理人、代理机构、申请人、发明人、优先权、主权项。</p><p>
+4.	检索结果可根据需要选择申请日或者公告日的升降序排序。</p><p>
+5.	检索结果可对所有数据进行提取分析。</p><p>
+6.	可对检索结果单个或者多个收藏。</p><p>
+7.	可对检索结果的著录项单个或者多个下载，也可以对全文进行打包下载。</p>
+
+      <div id="zl2"><p><strong>1.2	高级检索</strong></p></div>
+      <p>
+     1. 默认对全库专利进行检索。</p><p>
+     2. 默认对输入词进行扩展检索，无需输入%等。</p><p>
+3.检索实例</p><p>
+(1)公布公告号检索</p><p>
+　　例：CN100513742C、cn100513742c、100513742C、100513742。</p><p>
+<p>
+　　自左至右匹配检索。</p><p>
+(2) 公布公告日检索</p><p>
+　　输入2013.02.13，或输入2013.02，或输入2013。至少应输入完整的年份。</p><p>
+　　自左至右匹配检索。</p><p>
+(3) 申请号检索</p><p>
+　　例：CN99116390.7，CN99116390，99116390，cn99116390.7。</p><p>
+　　自左至右匹配检索。</p><p>
+(4) 申请日检索</p><p>
+　　输入2013.01.5，或输入2013.01，或输入2013。至少应输入完整的年份。</p><p>
+　　自左至右匹配检索。</p><p>
+(5) 申请人检索</p><p>
+　　例：中国石油集团渤海钻探工程有限公司、测井。</p><p>
+　　自左至右匹配检索。</p><p>
+(6) 发明人检索</p><p>
+　　例：吴亚民、左。</p><p>
+　　 自左至右匹配检索。</p><p>
+(7) 地址检索</p><p>
+　　例：重庆市沙坪坝区半边街2号、沙坪坝区。</p><p>
+　　自左至右匹配检索。</p><p>
+(8) 分类号检索</p><p>
+　　例：G01V3/08、01V3/08、G01V3。</p><p>
+　　自左至右匹配检索。</p><p>
+(9) 名称检索</p><p>
+　　例：泥浆脉冲、isotope。</p><p>
+　　自左至右匹配检索。</p><p>
+(10) 摘要/简要说明检索</p><p>
+　　例：中子、sidewall。</p><p>
+　　自左至右匹配检索。</p><p>
+(11) 专利代理机构检索</p><p>
+　　例：北京集佳知识产权代理有限公司 11227、北京集佳知识产权代理有限公司、北京、11227。</p><p>
+(12) 代理人检索</p><p>
+　　例：李玉明、赵。</p><p>
+(13)表达式检索：</p><p>
+名称(ti)、申请号(an)、申请日(ad)、公开（公告）号(pnm)、公开（公告）日(pd)、申请（专利权）人(pa)、发明（设计）人(in)、
+分类号(sic)、地址(ar)、摘要(ab )、专利代理机构(agc)、代理人(agt)。</p><p>
+可进行AND、OR、NOT运算，且AND、OR、NOT前后应有空格。</p><p>
+例：ti:(电极) AND pd:(2013)，ti:(电极) OR pd:(2013)，ti:(电极) AND NOT pd:(2013)。</p><p>
+     4.如果表达式文本框中已经存在表达式，则按照表达式进行检索。</p><p>
+因此在页面表达式不为空时，如果要修改检索条件，则需点击“生成表达式”，再进行检索。</p>
+      <div id="zl3"><p><strong>1.3	分类检索</strong></p></div>
+      <p>先点击左侧分类选项，在选择范围，点击搜索即可。</p>
+      <div id="zl4"><p><strong>1.4	IPC/CPC检索</strong></p></div>
+      <p>1、可在上方搜索框中根据分类号查询含义，也可以根据含义查分类号。</p>
+      <p>2、左侧导航包含8个部，A到H，方面检索。</p>
+      <p>3、每个分类号后有两种操作：</p>
+      <p>检索--> 直接根据分类号查询专利；</p>
+      <p>选择--> 把此分类号填到高级检索的分类号表格中，联合其他条件进行高级检索。</p>
+      <div id="zl5"><p><strong>1.5	引证文献检索</strong></p></div>
+      <p>可输入申请号或公告号查询一件专利的引证情况。</p>
+      <div id="zl6"><p><strong>1.6	同族检索</strong></p></div>
+      <p>可输入申请号或公告号查询一件专利的同族专利。</p>
+      <div id="zl7"><p><strong>1.7	法律状态检索</strong></p></div>
+      <p>可输入以下信息查询专利的法律状态：</p>
+      <p>1.申请号；</p>
+      <p>2.公告号；</p>
+      <p>3.法律状态公告日；</p>
+      <p>4.法律状态；</p>
+      <p>5.法律状态信息。</p>
+      <div id="zl8"><p><strong>1.8	二次检索</strong></p></div>
+      <p>1、位置：在专利展示的页面可进行二次检索</p>
+      <p>2、用法：通过下拉菜单选择要查询的项，输入关键词，点击二次查询即可</p>
+      <div id="zl9"><p><strong>1.9	公司代码检索</strong></p></div>
+      <p>1、位置：高级检索的申请人点击问号，进入公司代码检索</p>
+      <p>2、用法：在输入框填入关键词，点击检索</p>
+      <p>如果有检索结果，左边会有一个结果的树形展示。选择需要的申请人，点击中间的橙色箭头。</p>
+      <p>进入编辑状态，再生成表达式，在下方可以预览，点击确定填入到高级检索的申请人输入框中。</p>
+      <div id="zl10"><p><strong>1.10	同义词扩展</strong></p></div>
+      <p>1、位置：高级检索和快速检索的扩词按钮。</p>
+      <p>2、用法：在输入框填入关键词，点击检索。</p>
+      <p>如果有检索结果，左边会有一个结果的树形展示。选择需要的申请人，点击中间的橙色箭头。</p>
+      <p>进入编辑状态，再生成表达式，在下方可以预览，点击确定填到需要扩词的位置。</p>
+
+
+      <div class="title">分析</div>
+       <div id="fx1"> <p><strong>2.1 分析范围</strong></p></div>
+       <p>分析仅限快速检索和高级检索直接的结果，其后在结果页的专利类型和法律状态的过滤操作无法影响分析范围。</p>
+       <div id="fx2"> <p><strong>2.2 分析展示</strong></p></div>
+       <p>1、分析展示主要以图表为主，包括3种形式：饼图、柱状图、线图。</p>
+       <p>2、只有趋势分析的默认展示模式为线图，排序时按时间排列。其他图形按专利数量的倒序排列，取前10条展示。</p>
+       <div id="fx3"> <p><strong>2.3 分析列表</strong></p></div>
+		 <p>1、列表展示包含所有分析数据：分析项、专利数、百分比。</p>
+		 <p>2、点击表单首行，可对相应的列进行排序查看。</p>
+  </div>
+  </div>
+  </div>
+  <div class="bottom"><@Copyright/></div>
+   </body>
+</html>

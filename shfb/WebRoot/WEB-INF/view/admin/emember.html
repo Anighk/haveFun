@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="thirdparty/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script  src="js/jquery.min.js"></script>
+    <script src="thirdparty/bootstrap/js/bootstrap.min.js"></script>
+    <script src="thirdparty/layer/layer.min.js"></script>
+    <script>
+	function cancelBtn(){
+		var index=parent.layer.getFrameIndex(window.name);
+		parent.layer.close(index);
+	}
+	
+    function save(){
+        var edt=parent.document.getElementById("edt");
+        edt.nickname.value=document.getElementById("nickname").value;
+        edt.userid.value="${info.user_id}";
+        edt.regdate.value="${(info.reg_date)!''}";
+        var sm="";
+        if($("input[name='sales_manager']:checked").length>0){
+            sm=$("input[name='sales_manager']:checked").val();
+        }
+        edt.salesmanager.value=sm;
+        var vip="0";
+        if($("#vipcheck").prop("checked")){
+            vip="1";
+        }
+        edt.isvip.value=vip;
+        edt.overduedate.value=document.getElementById("overduedate").value;
+        edt.province.value=document.getElementById("province").value;
+        edt.city.value=document.getElementById("city").value;
+        edt.jobtitle.value=document.getElementById("jobtitle").value;
+        edt.company.value=document.getElementById("company").value;
+        edt.contacts.value=document.getElementById("contacts").value;
+        edt.tel.value=document.getElementById("tel").value;
+        edt.qq.value=document.getElementById("qq").value;
+        edt.equipment.value=document.getElementById("equipment").value;
+        edt.remark.value=document.getElementById("remark").value;
+        edt.submit();
+        var index=parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    }
+    function toRenew(uid){
+        parent.toRenew(uid);
+        var index=parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    }
+    </script>
+    <title>用户信息</title>
+</head>
+<body>
+    <div class="panel panel-info no_margin-bottom">
+        <div class="panel-heading">基础信息</div>
+        <div class="panel-body panel_body">
+            <ul class="list-unstyled list-inline">
+                <li class="li_title"><label>机器码：</label></li><li >${info.user_id}</li><li class="fr"><a href="#">历史续费信息</a> </li><li class="fr"><a href="javascript:toRenew('${info.user_id}');">去续费</a> </li>
+            </ul >
+            <ul class="list-unstyled list-inline"><li class="li_title"><label>过期时间：</label></li><li><input class="form-control" id="overduedate" type="date" value="<#if info.overdue_date?exists>${info.overdue_date?string("yyyy-MM-dd")}</#if>" disabled></li></ul>
+            <ul class="list-unstyled list-inline"><li class="li_title"><label>用户名：</label></li><li><input class="form-control" id="nickname" type="text" value="${(info.nick_name)!''}"></li></ul>
+            <ul class="list-unstyled list-inline"><li class="li_title"><label>vip会员：</label></li><li><label class="label_content" for="vipcheck">是否为vip会员</label></li><li><input class="checkbox" type="checkbox" id="vipcheck" <#if info.isvip?exists && info.isvip=='1'>checked</#if>></li></ul>
+            <ul class="list-unstyled list-inline">
+                <li class="li_title"><label>销售经理：</label></li>
+                <li><input class="radio" type="radio" name="sales_manager" value="陈冰梦" id="chenbingmeng" <#if info.sales_manager?exists && info.sales_manager=='陈冰梦'>checked</#if>></li><li><label class="label_content" for="chenbingmeng">陈冰梦</label></li>
+                <li><input class="radio" type="radio" name="sales_manager" value="胡永兰" id="huyonglan" <#if info.sales_manager?exists && info.sales_manager=='胡永兰'>checked</#if>></li><li><label class="label_content" for="huyonglan">胡永兰</label></li>
+                <li><input class="radio" type="radio" name="sales_manager" value="祖艺航" id="zuyihang" <#if info.sales_manager?exists && info.sales_manager=='祖艺航'>checked</#if>></li><li><label class="label_content" for="zuyihang">祖艺航</label></li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">详细信息</div>
+        <div class="panel-body">
+            <form class="form-horizontal panel_body_form">
+                <div class="form-group full_width fl">
+                    <label class="control-label fl li_title">省份：</label>
+                    <input class="form-control li_content" id="province" type="text" value="${(info.province)!''}">
+                </div>
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title">城市：</label>
+                    <input class="form-control li_content" id="city" type="text" value="${(info.city)!''}">
+                </div>
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title">所属单位：</label>
+                    <input class="form-control li_content" id="company" type="text" value="${(info.company)!''}">
+                </div>
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title">职务：</label>
+                    <input class="form-control li_content" id="jobtitle" type="text" value="${(info.job_title)!''}">
+                </div>
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title">联系人：</label>
+                    <input class="form-control li_content" id="contacts" type="text" value="${(info.contacts)!''}">
+                </div>
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title">联系电话：</label>
+                    <input class="form-control li_content" id="tel" type="text" value="${(info.tel)!''}">
+                </div>
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title">QQ：</label>
+                    <input class="form-control li_content" id="qq" type="text" value="${(info.qq)!''}">
+                </div>
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title">设备：</label>
+                    <input class="form-control li_content" id="equipment" type="text" value="${(info.equipment)!''}">
+                </div>
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title">备注：</label>
+                    <input class="form-control li_content" id="remark" type="text" value="${(info.remark)!''}">
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="fr footer_btns">
+        <a class="btn btn-primary footer_btn" href="javascript:save();" role="button">确定</a>
+        <a class="btn btn-default footer_btn" href="javascript:cancelBtn();" role="button">取消</a>
+    </div>
+</body>
+</html>

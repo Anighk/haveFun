@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="thirdparty/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="thirdparty/bootstrap/js/bootstrap.min.js"></script>
+    <script src="thirdparty/layer/layer.min.js"></script>
+    <script>
+        function cancelBtn(){
+            var index=parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        }
+        function save(){
+            var rn=parent.document.getElementById("rn");
+            rn.userid.value="${info.user_id}";
+            rn.renewyear.value=document.getElementById("renewyear").value;
+            rn.renewto.value=document.getElementById("renewto").value;
+            rn.remark.value=document.getElementById("remark").value;
+            rn.submit();
+            var index=parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        }
+        function timeselect(){
+            var timeStr=document.getElementById("renewyear").value;
+            var dateStr="";
+            var date_now=null;
+            <#if info.overdue_date?exists>
+            	dateStr="${info.overdue_date?string('yyyy/MM/dd')}";
+            	date_now=new Date(Date.parse(dateStr));
+            <#else>
+            	date_now=new Date();
+            </#if>
+            var year=date_now.getFullYear();
+            var mouth=date_now.getMonth()+1;
+            var day=date_now.getDate();
+            if(timeStr=="3个月"){
+                if(mouth<=9){
+                    mouth+=3;
+                }else{
+                    mouth=mouth-9;
+                    year+=1;
+                }
+            }else if(timeStr=="1年"){
+                year+=1;
+            }else if(timeStr=="2年"){
+                year+=2;
+            }else if(timeStr=="3年"){
+                year+=3;
+            }else if(timeStr=="5年"){
+                year+=5;
+            }
+            if(mouth <= 9) mouth = "0"+mouth;
+            if(day <= 9) day = "0"+day;
+            dateStr=year+"-"+mouth+"-"+day
+            document.getElementById("renewto").value=dateStr;
+        }
+    </script>
+    <title>续费</title>
+</head>
+<body>
+    <div class="panel panel-info">
+        <div class="panel-heading">续费信息</div>
+        <div class="panel-body">
+            <form class="form-horizontal panel_body_form">
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title">机器码：</label>
+                    <input class="form-control li_content" type="text" value="${info.user_id}" disabled>
+                </div>
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title">用户名：</label>
+                    <input class="form-control li_content" type="text" value="${(info.nick_name)!''}" disabled>
+                </div>
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title">续费年限：</label>
+                    <select class="form-control li_content" id="renewyear" onchange="timeselect()">
+                    	<option value="">选择年限</option>
+                  	    <option value="3个月">3个月</option>
+                        <option value="1年">1年</option>
+                        <option value="2年">2年</option>
+                        <option value="3年">3年</option>
+                        <option value="5年">5年</option>
+                        <option value="自定义">自定义</option>
+                    </select>
+                </div>
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title">续费至：</label>
+                    <input class="form-control li_content" id="renewto" type="date">
+                </div>
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title">销售经理：</label>
+                    <input class="form-control li_content" type="text" value="${(info.sales_manager)!''}" disabled>
+                </div>
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title fl">备注：</label>
+                    <textarea class="form-control li_content" style="height: 80px;" id="remark">${(info.remark)!''}</textarea>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="fr footer_btns">
+        <a class="btn btn-primary footer_btn" href="javascript:save();" role="button">确定</a>
+        <a class="btn btn-default footer_btn" href="javascript:cancelBtn();" role="button">取消</a>
+    </div>
+</body>
+</html>

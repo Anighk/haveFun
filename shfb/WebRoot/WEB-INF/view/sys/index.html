@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+   
+    <title>快速检索</title>
+    
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="css/pub.css">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/msearch.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="layer/layer.min.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		var inputS=$('#soso_text'),
+		defVal = inputS.val();
+		inputS.bind({
+			focus:function(){
+				var _this=$(this);
+				inputS.addClass("focus");
+				if(_this.val() == defVal){
+					_this.val('');
+				}
+			},
+			blur:function(){
+				var _this=$(this);
+				inputS.removeClass("focus");
+				if(_this.val() == ''){
+					_this.val(defVal);
+				}
+			}
+		});
+	});
+	
+		function gw(){
+			var chk = document.getElementById("gwchk").checked;
+			$('#gw input').each(function(){
+					$(this).prop("checked", chk);
+			});
+		}
+		function gn(){
+			var chk = document.getElementById("gnchk").checked;
+			$('#gn input').each(function(){
+					$(this).prop("checked", chk);
+			});
+		}
+		function synEx(id){
+			document.getElementById("synid").innerHTML=id;
+			$.layer({
+			    type: 2,
+			    maxmin: true,
+			    shadeClose: true,
+			    title: '同义词扩展',
+			    shade: [0.1,'#fff'],
+			    offset: ['100px',''],
+			    area: ['1000px', ($(window).height() - 150) +'px'],
+			    iframe: {src: 'toSyn.do'}
+			}); 
+		}
+	</script>
+
+  </head>
+  
+<body style="background:url(images/qbg1.png) no-repeat bottom center; position:relative; height:1000px">
+<#include "/WEB-INF/ftl/nav.ftl">
+<#include "/WEB-INF/ftl/macro.ftl">
+<div class="body1">
+<div class="body">
+
+<div class="select">
+	<div class="ds_trz">
+      <input name="an" type="radio" value="Patentsth"  checked="checked"/><span class="onest">总库</span>
+	</div>
+	<#if ulist?exists && (ulist?size > 0)>
+		<div class="ds_tr">
+		      <input name="an" type="radio" value="0" /><span class="onest">未标引专利库</span>
+		      <select name="option" id="unsign" class="ds_s">
+		   		<#list ulist as u>
+		  			<option value="${u.id}"  >${u.projname}</option>
+		  		</#list>     	
+		      </select>
+		</div>
+	</#if>
+	<#if list?exists && (list?size > 0)>
+		<div class="ds_tr">
+		      <input name="an" type="radio" value="1" /><span class="onest">已标引专利库</span>
+		      <select name="option" id="sign" class="ds_s">
+		   		<#list list as l>
+		  			<option value="${l.id}"  >${l.projname}</option>
+		  		</#list>     
+		      </select>
+		</div>
+	</#if>
+</div>
+
+<div class="sear_bg">
+<input onkeypress="javascript:if(event.keyCode == 13) ksjs()"	id="soso_text" type="text" value="请输入关键词，例如：测井" />
+<a href="javascript:ksjs();"><img src="images/sea_14.png" /></a>
+<div style="display:none" id="synid"></div>
+</div>
+<div class="select" id="gn">
+<div class="selectbt"><span>国内：</span></div>
+  <div class="selectb"><input name="slct" type="checkbox" value="'CN1'" /><span>中国发明公布</span></div>
+  <div class="selectb"><input name="slct" type="checkbox"  value="'CN1B'" /><span>中国发明授权</span></div>
+  <div class="selectb"><input name="slct" type="checkbox"   value="'CN2'" /><span>中国实用新型</span></div>
+<div><input id="gnchk" type="checkbox"   onclick="gn()"  /><span>国内全选</span></div>
+</div>
+<div id="gw">
+<div class="select" >
+<div class="selectbt"><span>国外：</span></div>
+  <div class="selectb"><input name="slct" type="checkbox" value="'US'" /><span>美国</span></div>
+  <div class="selectb"><input name="slct" type="checkbox" value="'DE'" /><span>德国</span></div>
+  <div class="selectb"><input name="slct" type="checkbox" value="'KR'" /><span>韩国</span></div>
+  <div class="selectb"><input name="slct" type="checkbox" value="'GB'" /><span>英国</span></div>
+  <div class="selectb"><input name="slct" type="checkbox" value="'FR'" /><span>法国</span></div>
+  </div>
+  <div class="selecth">
+  <div class="selectbt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+  <div class="selectb"><input name="slct" type="checkbox" value="'CH'" /><span>瑞士</span></div>
+  <div class="selectb"><input name="slct" type="checkbox" value="'JP'" /><span>日本</span></div>
+  <div class="selectb"><input name="slct" type="checkbox" value="'RU','SU'" /><span>俄罗斯</span></div>   
+  <div class="selectb"><input name="slct" type="checkbox" value="'EP'" /><span>EPO</span></div>
+  <div class="selectb"><input name="slct" type="checkbox" value="'WO'" /><span>WIPO</span></div>
+   <div class="selectb"><input id="gwchk" type="checkbox" onclick="gw()"  /><span>国外全选</span></div>
+</div>
+</div>
+   
+<div class="text_content"></div>
+	
+</div>
+</div>
+<div class="bottom" style="position:fixed;bottom:0; margin:0"><@Copyright/>
+</div>
+	<form action="poks.do" id="ksjs" method="post">
+		<input type="hidden" name="strWord" /> 
+		<input type="hidden" name="sortMethod" />
+		<input type="hidden" name="strSources" />
+		<input type="hidden" name="pageSize" />
+		<input type="hidden" name="pageNow" />
+		<input type="hidden" name="ktype"  value="1"/>
+		<input type="hidden" name="projid" />
+	</form>
+</body>
+</html>

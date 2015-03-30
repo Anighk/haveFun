@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+  <head>
+    <title>test.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+     <script type="text/javascript" src="js/jquery.ztree.all-3.5.min.js"></script>
+	<script type="text/javascript">
+	var setting = {
+			async: {
+				enable: true,
+				contentType: "application/json",
+				url:"asyncc.do"
+			},
+	        data: {
+	            simpleData: {
+	                enable: true
+	            }
+	        }
+		};
+	$(document).ready(function(){
+		$.fn.zTree.init($("#treeDemo"), setting);
+	});
+	
+	function ajax(){
+		$.ajax({
+			url:"testGarbled.do",
+			type:"POST",
+	        dataType:"html",
+			success:function(data){
+	        	  alert(data);
+			}
+		});
+	}
+	
+	function regtest(){
+		var pwd = document.getElementById("pwd").value;
+		var num=0;
+		var reg1=/[0-9]/;
+		var reg2=/[a-z]/;
+		var reg3=/A-Z/;
+		var reg4=/[!#$%_]/;
+		if(reg1.test(pwd)){
+			num=num+1;
+		}
+		if(reg2.test(pwd)){
+			num=num+1;
+		}
+		if(reg3.test(pwd)){
+			num=num+1;
+		}
+		if(reg4.test(pwd)){
+			num=num+1;
+		}
+		alert(num);
+		return num>=3;
+	}
+	
+	function regtest2(){
+		var pwd=document.getElementById("pwd").value;
+		var reg=/^[a-zA-Z0-9_]+$/;
+		var flag=reg.test(pwd);
+		alert(flag);
+	}
+
+	function regalert(){
+		var flag=regtest();
+		alert(flag);
+	}
+	
+	function checkNum(){
+		var pwd=document.getElementById("pwd").value;
+		var reg=/^\d+$/;
+		var flag=reg.test(pwd);
+		alert(flag);
+	}
+	
+	function jsotest(){
+		var toj = document.getElementById("toj");
+		var ii=new IndexInfo("abc","I'm abc.");
+		var ii2=new IndexInfo("xyz","I'm xyz.");
+		var  iarray=new Array();
+		iarray.push(ii);
+		iarray.push(ii2);
+		toj.json.value=JSON.stringify(iarray);
+		toj.submit();
+	}
+	
+	function IndexInfo(key,value){
+		var ii=new Object();
+		ii.key=key;
+		ii.value=value;
+		return ii;
+	}
+	</script>
+  </head>
+  
+  <body>
+  	<div><a href="toQks.do">返回</a></div>
+  	<a href="toTest.do">重置</a>
+    <a href="testGarbled.do">乱码问题</a>
+    <a href="javascript:ajax();">乱码问题异步post</a>
+    <div>
+    	<ul id="treeDemo" class="ztree"></ul>
+    </div>
+         <div class="chknumber">
+        <label>验证码：        
+        <input name="kaptcha" type="text" id="kaptcha" maxlength="4" class="chknumber_input" />             
+        </label>
+         <img src="captcha.do" width="55" height="20" id="kaptchaImage"  style="margin-bottom: -3px"/> 
+      </div>
+      <div><input type="text" id="pwd"></div>
+      <div><a href="javascript:regtest();">正则检验</a></div>
+      <div><a href="javascript:regalert();">提示</a></div>
+      <div><a href="javascript:jsotest();">js对象测试</a></div>
+      <div><a href="javascript:regtest2();">正则检验2</a></div>
+      <div><a href="javascript:checkNum();">验证正整数和0</a></div>
+      <#if "abc"?index_of("b")!=-1>
+      <div>index_of !!!</div>
+      </#if>
+      <form action="testobj.do" id="toj" method="post">
+    	<input type="hidden" name="json" />
+     </form>
+  </body>
+</html>

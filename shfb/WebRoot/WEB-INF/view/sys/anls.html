@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="thirdparty/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="thirdparty/dataTables/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="thirdparty/bootstrap/js/bootstrap.min.js"></script>
+    <script src="thirdparty/dataTables/js/jquery.dataTables.min.js"></script>
+    <script src="js/highcharts.js"></script>
+    <script src="js/draw.js"></script>
+    <script>
+        $(function () {
+            $('li.navbars').hover(function () {
+                        $(this).addClass("active");
+                    }, function () {
+                        $(this).removeClass("active");
+                    }
+            );
+            $('#datatable').dataTable({
+                "bPaginate": true, //翻页功能
+                "bLengthChange": false, //改变每页显示数据数量
+                "bFilter": false, //过滤功能
+                "order":[[1,"desc"]],
+                "bInfo": true,//页脚信息
+                "bAutoWidth": true,//自动宽度
+                "language": {
+                	"url": "thirdparty/dataTables/js/zh_CN.json"
+                }
+            });
+            var xAxis=${xarray};
+            var yName="检索次数";
+    		var series=${yarray};
+    		column('',xAxis,yName,series,'dataChart');
+        });
+        
+        function anls_member(){
+        	var anls=document.getElementById("anls_");
+        	anls.startdt.value=document.getElementById("startdt").value;
+        	anls.enddt.value=document.getElementById("enddt").value;
+        	anls.submit();
+        }
+        
+        function anls(type){
+        	var anls=document.getElementById("anls");
+        	anls.type.value=type;
+        	anls.startdt.value=document.getElementById("startdt").value;
+        	anls.enddt.value=document.getElementById("enddt").value;
+        	anls.submit();
+        }
+        
+        function dateSelect(num){
+            var dateStr=dateMath(num);
+            var anls=document.getElementById("anls");
+            anls.startdt.value=dateStr;
+            anls.type.value="${type}";
+            anls.submit();
+        }
+
+        function dateMath(num){
+            var today=new Date();
+            var todayStr=today.valueOf();
+            var dateStr=todayStr-86400000*num;
+            var date=new Date(dateStr);
+            var year=date.getFullYear();
+            var mouth=date.getMonth()+1;
+            var day=date.getDate();
+            if(mouth <= 9) mouth = "0"+mouth;
+            if(day <= 9) day = "0"+day;
+            dateStr=year+"-"+mouth+"-"+day
+            return dateStr;
+        }      
+        
+    </script>
+    <title>按<#if type=='city'>城市<#else>省份</#if>分析</title>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header" style="margin-top: 5px;">
+                <img class="img-rounded" src="images/logo.jpg" width="40px;" height="40px;" >
+            </div>
+            <div class="navbar-header" style="margin-left: 10px;">
+                <a class="navbar-brand" href="login.html">专利通管理工具</a>
+            </div>
+            <div class="collapse navbar-collapse pull-right">
+                <ul class="nav navbar-nav">
+                    <li class="navbars"><a href="listMembers.do"><span class="glyphicon glyphicon-user"></span><span style="margin-left: 8px;">用户管理</span></a></li>
+                    <li class="navbars"><a href="anls_member.do"><span class="glyphicon glyphicon-edit"></span><span style="margin-left: 8px;">访问统计</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container main">
+        <div class="title_nav">
+            <ul class="title_nav_ul1">
+                <li class="title_nav_li"><a href="javascript:dateSelect(0);">今天</a></li>
+                <li><a href="javascript:dateSelect(1);">昨天</a></li>
+                <li><a href="javascript:dateSelect(7);">最近7天</a></li>
+                <li><a href="javascript:dateSelect(30);">最近30天</a></li>
+                <li><a href="javascript:dateSelect(90);">最近90天</a></li>
+            </ul>
+            <ul class="title_nav_ul2">
+                <li><input class="form-control" type="date" id="startdt" value="${(startdt)!''}"></li>
+                <li><label> - </label></li>
+                <li><input class="form-control" type="date" id="enddt" value="${(enddt)!''}"></li>
+                <li><a class="btn btn-primary" href="javascript:anls('${type}');" role="button" >确定</a></li>
+            </ul>
+        </div>
+        <div class="content_div_mt">
+            <ul class="nav nav-tabs ">
+                <li role="presentation" ><a href="javascript:anls_member();">按用户</a></li>
+                <li role="presentation" <#if type=='city'>class="active"</#if>><a href="javascript:anls('city');">按城市</a></li>
+                <li role="presentation" <#if type=='province'>class="active"</#if>><a href="javascript:anls('province');">按省份</a></li>
+            </ul>
+        </div>
+        <div class="content_div_mt" id="dataChart"></div>
+        <div class="content_div_mt content_div_mb">
+            <table class="table  table-bordered" id="datatable">
+                <thead class="table_header">
+                    <tr>
+                        <th><#if type=='city'>城市<#else>省份</#if></th>
+                        <th>检索次数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <#list List as info>
+                    <tr>
+                        <td>${info.xAxis}</td>
+                        <td>${info.yAxis}</td>
+                    </tr>
+                    </#list>
+                </tbody>
+            </table>
+        </div>
+    </div>
+	<form action="anls.do" id="anls" method="post">
+		<input type="hidden" name="type"/>
+		<input type="hidden" name="startdt" />
+		<input type="hidden" name="enddt" />
+    </form>     
+    
+	<form action="anls_member.do" id="anls_" method="post">
+		<input type="hidden" name="startdt" />
+		<input type="hidden" name="enddt" />
+    </form>         
+</body>
+</html>

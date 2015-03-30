@@ -1,0 +1,419 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+  <head>
+    <title>分类检索</title>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">    
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="分类导航">
+    <link rel="stylesheet" type="text/css" href="css/foot.css">
+    <link href="css/pub.css" rel="Stylesheet" type="text/css">
+    <link href="css/style_zl.css" rel="Stylesheet" type="text/css">
+    <link href="css/recls.css" rel="Stylesheet" type="text/css">
+    <link href="css/jquery-ui-1.10.4.custom.min.css" rel="Stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/zTreeStyle/zTreeStyleCls.css" type="text/css">
+    <link rel="stylesheet" href="css/zTreeStyle/zTreeOutLookStyle.css" type="text/css">
+    <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="js/excanvas.min.js"></script><![endif]-->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.10.4.custom.min.js"></script>
+    <script type="text/javascript" src="layer/layer.min.js"></script>
+    <script type="text/javascript" src="js/jquery.ztree.all-3.5.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript">
+    var curMenu = null, zTree_Menu = null;
+    var setting = {
+        view: {
+            showLine: false,
+            showIcon: false,
+            selectedMulti: false,
+            dblClickExpand: false,
+            addDiyDom: addDiyDom
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            beforeClick: beforeClick,
+            onClick: zTreeOnClick
+        }
+    };
+
+    var zNodes =${znodes};
+
+    function addDiyDom(treeId, treeNode) {
+        var spaceWidth = 5;
+        var switchObj = $("#" + treeNode.tId + "_switch"),
+        icoObj = $("#" + treeNode.tId + "_ico");
+        switchObj.remove();
+        icoObj.before(switchObj);
+
+        if (treeNode.level > 1) {
+            var spaceStr = "<span style='display: inline-block;width:" + (spaceWidth * treeNode.level)+ "px'></span>";
+            switchObj.before(spaceStr);
+        }
+    }
+
+    function zTreeOnClick(event,treeId, treeNode) {
+    	cls(treeNode.name,treeNode.id);
+    }
+    
+    function beforeClick(treeId, treeNode) {
+        return true;
+    }
+
+    $(document).ready(function(){
+        var treeObj = $("#classTree");
+        $.fn.zTree.init(treeObj, setting, zNodes);
+        zTree_Menu = $.fn.zTree.getZTreeObj("classTree");
+//        curMenu = zTree_Menu.getNodes()[0].children[0].children[0];
+//        zTree_Menu.selectNode(curMenu);
+		curMenu=zTree_Menu.getNodesByParam("id", "${id}", null);
+		zTree_Menu.selectNode(curMenu);
+        treeObj.hover(function () {
+            if (!treeObj.hasClass("showIcon")) {
+                treeObj.addClass("showIcon");
+            }
+        }, function() {
+            treeObj.removeClass("showIcon");
+        });
+    });
+
+    function cls(naclass,id){
+        var cls = document.getElementById("clfs");
+		var temp = "";
+		var f = $("input[name='cl']:checked");
+		var ku=f[0].value;
+		if(ku=="0"){
+			temp=document.getElementById("unsign").value;
+		}else if(ku=="1"){
+			temp=document.getElementById("sign").value;
+		}
+		cls.ktype.value=ku;
+		cls.projid.value=temp;
+        cls.naclass.value=naclass;
+		cls.id.value=id;
+        cls.submit();
+    }
+    function sourceChanged(){
+	      var objS = document.getElementById("datasource");
+	         var grade = objS.options[objS.selectedIndex].value;
+	         if(grade=="Patentsth"){
+	        	 document.getElementById("unsign").style.display="none"; 
+	        	 document.getElementById("sign").style.display="none"; 
+	         }else  if(grade=="1"){
+	        	 document.getElementById("sign").style.display="none"; 
+	        	 document.getElementById("unsign").style.display=""; 
+	        
+	         }else{
+	        	 document.getElementById("unsign").style.display="none"; 
+	        	 document.getElementById("sign").style.display="";  
+	         }
+	}
+    function pds(pkey,projid){
+    	var pds = document.getElementById("pds");
+    	pds.pkey.value = pkey;
+    	pds.projid.value = projid;
+    	pds.submit();
+    }
+	function zl_fy(p) {
+		var cls = document.getElementById("clfs");
+		var temp = "";
+		var f = $("input[name='cl']:checked");
+		var ku=f[0].value;
+		if(ku=="0"){
+			temp=document.getElementById("unsign").value;
+		}else if(ku=="1"){
+			temp=document.getElementById("sign").value;
+		}
+		cls.ktype.value=ku;
+		cls.projid.value=temp;
+    	cls.pageSize.value = "${(pageSize)!''}";
+    	cls.naclass.value = "${(naclass)!''}";
+    	cls.id.value="{id}"
+    	cls.pageNow.value = p;
+    	cls.submit();
+		}
+    
+    function s_click(obj) {
+        var num = 0;
+        for (var i = 0; i < obj.options.length; i++) {
+            if (obj.options[i].selected == true) {
+                num++;
+            }
+        }
+        if (num == 1) {
+        	var cls = document.getElementById("clfs");
+        	cls.sortMethod.value = obj.options[obj.selectedIndex].value;
+    		var temp = "";
+    		var f = $("input[name='cl']:checked");
+    		var ku=f[0].value;
+    		if(ku=="0"){
+    			temp=document.getElementById("unsign").value;
+    		}else if(ku=="1"){
+    			temp=document.getElementById("sign").value;
+    		}
+    		cls.ktype.value=ku;
+    		cls.projid.value=temp;
+        	cls.pageSize.value = "${(pageSize)!''}";
+        	cls.naclass.value = "${(naclass)!''}";
+        	cls.strSource.value = "${(strSource)!''}";
+        	cls.id.value="{id}"
+        	cls.pageNow.value = "1";
+        	cls.submit();
+        }
+    }
+    
+    function c_click(obj) {
+        var num = 0;
+        for (var i = 0; i < obj.options.length; i++) {
+            if (obj.options[i].selected == true) {
+                num++;
+            }
+        }
+        if (num == 1) {
+        	var cls = document.getElementById("clfs");
+        	cls.strSource.value = obj.options[obj.selectedIndex].value;
+    		var temp = "";
+    		var f = $("input[name='cl']:checked");
+    		var ku=f[0].value;
+    		if(ku=="0"){
+    			temp=document.getElementById("unsign").value;
+    		}else if(ku=="1"){
+    			temp=document.getElementById("sign").value;
+    		}
+    		cls.ktype.value=ku;
+    		cls.projid.value=temp;
+        	cls.pageSize.value = "${(pageSize)!''}";
+        	cls.naclass.value = "${(naclass)!''}";
+        	cls.sortMethod.value = "${(sortMethod)!''}";
+        	cls.id.value="{id}"
+        	cls.pageNow.value = "1";
+        	cls.submit();
+        }
+    }
+    </script>
+  </head>
+  <body>
+<#include "/WEB-INF/ftl/nav.ftl">
+<#include "/WEB-INF/ftl/macro.ftl">
+    <div class="mconnect">
+      <div class="con_border">
+        <div class="con_left">
+              <div>
+     <!-- <div class="cl_out">
+   				   <input name="an" type="radio" value="Patentsth"  <#if ktype=='Patentsth'>checked="checked"</#if>/><span class="onest">总库</span>
+   				 </div>
+				      <#if ulist?exists && (ulist?size > 0)>
+							<div class="cl_out">
+								<div>
+							      <input name="an" type="radio" value="0" <#if ktype=='0'>checked="checked"</#if> /><span class="onest">未标引专利库</span>
+							     </div>
+							     <div>
+							      <select name="option" id="unsign" class="dch_s">
+							   		<#list ulist as u>
+							  			<option value="${u.id}"  <#if projid==u.id> selected="selected"</#if> >${u.projname}</option>
+							  		</#list>     	
+							      </select>
+							     </div>
+							</div>
+						</#if>
+						<#if list?exists && (list?size > 0)>
+						<div class="cl_out">
+							<div>
+						      <input name="an" type="radio" value="1"  <#if ktype=='1'>checked="checked"</#if>/><span class="onest">已标引专利库</span>
+						     </div>
+						     <div>
+						      <select name="option" id="sign" class="dch_s">
+						   		<#list list as l>
+						  			<option value="${l.id}"  <#if projid==l.id> selected="selected"</#if>>${l.projname}</option>
+						  		</#list>     
+						      </select>
+						      </div>
+						</div>
+						</#if> -->   
+				</div> 
+				<div>
+					 <ul id="classTree" class="ztree"></ul>
+				</div>
+        </div>
+        <div class="con_right">
+                        <div class="cl_out" style="width:600px; float:left; padding-left:30px"> 	
+              	 <div class="ds_trz">
+      <input type="radio"  value="Patentsth" name="cl" <#if ktype=='Patentsth'>checked="checked"</#if>><span class="onest">总库</span>
+	</div>
+	 <#if ulist?exists && (ulist?size > 0)>
+		<div class="ds_tr">
+			      <input type="radio" value="0" name="cl" <#if ktype=='0'>checked="checked"</#if>><span class="onest">未标引专利库</span>
+			      <select name="option" id="unsign" class="dch_s">
+						   		<#list ulist as u>
+						  			<option value="${u.id}"  <#if projid==u.id> selected="selected"</#if> >${u.projname}</option>
+						  		</#list>   
+			      </select>
+			</div>
+		</#if>  
+		<#if list?exists && (list?size > 0)>
+		<div class="ds_tr">
+		      <input type="radio" value="1" name="cl" <#if ktype=='1'>checked="checked"</#if>><span class="onest">已标引专利库</span>
+		      <select name="option" id="sign" class="dch_s">
+				   		<#list list as l>
+				  			<option value="${l.id}"  <#if projid==l.id> selected="selected"</#if>>${l.projname}</option>
+				  		</#list> 
+				      </select>
+		</div>
+		</#if>
+		</div>
+							<div class="cl_out"  >
+							     <div>
+							      <select name="option" id="unsign" class="dch_s" style="display:none">
+							         <#if ulist?exists && (ulist?size > 0)>
+							   		<#list ulist as u>
+							  			<option value="${u.id}"  <#if projid==u.id> selected="selected"</#if> >${u.projname}</option>
+							  		</#list>   
+							  			</#if>  	
+							      </select>
+							     </div>
+							</div>
+					
+					
+						<div   class="cl_out" >
+						
+						     <div>
+						      <select name="option" id="sign" class="dch_s" style="display:none">
+						      	<#if list?exists && (list?size > 0)>
+						   		<#list list as l>
+						  			<option value="${l.id}"  <#if projid==l.id> selected="selected"</#if>>${l.projname}</option>
+						  		</#list> 
+						  		</#if>     
+						      </select>
+						      </div>
+						</div>
+						
+   		<#if posList??>
+    			<div class="resulth">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="760px">
+                    <tbody><tr>
+                        <td height="32" valign="middle">
+                            <div class="digg" style="width:780px">
+									<div class="pcx" style="margin-left:15px;">
+										<select name="ptypeoption" id="ptc" onchange="c_click(this)" style="width:120px;">
+											<#list cList as c>
+		                               			<option value="${c.ptype}"  <#if strSource==c.ptype>selected="selected"</#if>>${c.column}&nbsp;&nbsp;(${c.num})</option>
+		                               		</#list>
+										</select>
+									</div>
+									<div class="pcx" style="margin-left:55px;">
+		                                  <select name="sortoption" id="xlpx" onchange="s_click(this)">
+												<option value ="">请选择排序方式</option>
+												<option value ="applydate desc"  <#if sortMethod=='applydate desc'> selected="selected"</#if>>申请日降序</option>
+												<option value ="applydate" <#if sortMethod=='applydate'> selected="selected"</#if>>申请日升序</option>
+												<option value ="opendate desc" <#if sortMethod=='opendate desc'> selected="selected"</#if>>公告日降序</option>
+												<option value ="opendate" <#if sortMethod=='opendate'> selected="selected"</#if>>公告日升序</option>
+										</select>
+		                             </div>
+	<div class="mr"><@Pagination/></div>
+			    </div>
+				</td>
+                    </tr>
+                    <tr>
+                        <td height="46" valign="middle">
+                            <div class="digg" style="width:760px;">
+                                <div class="fxkh"><input id="allchk" type="checkbox" onclick="allchk()" /></div>
+                               	 <div class="qx">全选</div>
+                                 <div class="buttonn fl"><a href="javascript:asyncfocus();">收藏</a></div>
+                                 <div class="buttonn fl"><a href="javascript:dlT();">下载著录项</a></div>
+                                 <div class="buttonn fr"><a href="javascript:anls();">分析</a></div>
+                            </div> 
+                        </td>
+                    </tr>
+                </tbody></table>
+            </div>
+    <#list posList as pat>
+    <div class="record" style="width:760px;"><div class="record_fll">
+      <div class="rec1">
+        <div class="fxk2">
+          <input name="an" type="checkbox" value="${pat.pkey},${pat.pdfPath}" />
+        </div>
+        <div class="tit">
+          <span class="wzh">
+            <a href="javascript:pds('${pat.pkey!}','${pat.projid!}');">
+              <span class="type">[${pat.pt}]${pat.ls}&nbsp;&nbsp;</span>${pat.ti}
+            </a>
+          </span>
+        </div>
+      </div>
+      <table width="100%" border="0" align="right" cellpadding="0" cellspacing="0" style="clear:both; overflow:auto">
+        <tr>
+          <td width="18%" align="left" valign="top" class="fonth">公开（公告）号：</td>
+          <td width="30%" align="left" valign="top" class="fontc link_c"><a href="javascript:kscx('pnm','${(pat.pnm)!''}');">${(pat.pnm)!''}</a></td>
+          <td width="20%" align="left" valign="top" class="fonth" style="padding-left:12px">公开（公告）日：</td>
+          <td width="32%" valign="top" class="fontc link_c"><a href="javascript:kscx('pd','${pat.pd}');">${pat.pd}</a> </td>
+        </tr>
+        <tr>
+          <td align="left" valign="top" class="fonth">申请号：</td>
+          <td valign="top" class="fontc link_c"><a href="javascript:kscx('an','${pat.an}')">${pat.an}</a></td>
+          <td align="left" valign="top" class="fonth" style="padding-left:12px">申请日：</td>
+          <td valign="top" class="fontc link_c"><a href="javascript:kscx('ad','${pat.ad}');">${pat.ad}</a></td>
+        </tr>
+        <tr>
+          <td align="left" valign="top" class="fonth">申请人：</td>
+          <td valign="top" class="fontc link_c"><a href="javascript:kscx('pa','${pat.pa}');">${pat.pa}</a></td>
+          <td align="left" valign="top" class="fonth" style="padding-left:12px">主分类号：</td>
+          <td valign="top" class="fontc link_c"><a href="javascript:kscx('pic','${pat.pic}');">${pat.pic}</a></td>
+        </tr>
+        <tr>
+          <td colspan="4"><span class="fonth">摘要：</span>${pat.ab}</td>
+        </tr>
+        <tr>
+          <td colspan="3" class="fonth">&nbsp;</td>
+          <td width="46%" class="fontc">&nbsp;</td>
+        </tr>
+      </table>
+    </div>
+    <div class="record_frr">
+    <#if pat.imgPath!='images/blank.png'>
+    <a rel="ptimg"  href="${pat.imgPath}"  ><img src="${pat.imgPath}" style="width:155px;height:130px;margin-top:20px"></a>
+    </#if>
+    </div>
+    </div>
+    </#list>
+        <div class="resulthf">
+      <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td><div class="digg" style="width:780px">
+<div class="mr"><@Pagination id="pnx" func="zl_tzx"/></div>        
+</div>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+  		
+  		
+  		<#else>
+  			<div class="cls_empty_content"><p>请选择查询分类</p></div>	
+  		</#if>
+        </div>
+      </div>
+    </div>
+    <div class="bottom"><@Copyright/></div>
+    <form action="cls.do" id="clfs" method="post">
+      <input type="hidden" name="naclass" />
+      <input type="hidden" name="ktype" />
+      <input type="hidden" name="projid" />
+      <input type="hidden" name="id" />
+      <input type="hidden" name="sortMethod" />
+      <input type="hidden" name="strSource"/>
+      <input type="hidden" name="pageSize" />
+      <input type="hidden" name="pageNow" />
+    </form>
+    
+	<form action="pds.do" id="pds" method="post" target="_blank">
+		<input type="hidden" name="pkey" />
+		<input type="hidden" name="projid" />
+		<input type="hidden" name="table" value="${(ktype)!''}"/>
+	</form>
+  </body>
+</html>

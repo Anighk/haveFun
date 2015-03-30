@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="thirdparty/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="css/login.css">
+    <script  src="js/jquery.min.js"></script>
+    <script src="thirdparty/bootstrap/js/bootstrap.min.js"></script>
+    <title>专利通后台管理工具</title>
+</head>
+<body>
+    <div class="body_backgroupimage"><img src="images/lg_03.jpg"></div>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header" style="margin-top: 5px;">
+                <img class="img-rounded" src="images/logo.jpg" width="40px;" height="40px;" >
+            </div>
+            <div class="navbar-header" style="margin-left: 10px;">
+                <a class="navbar-brand" href="login.html">专利通管理工具</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <form class="form-signin" action="login.do">
+            <h2 class="form-signin-heading">管理登录</h2>
+            <input type="text" name="username" class="form-control" placeholder="用户名" required autofocus>
+            <input type="password" name="password" class="form-control" placeholder="密码" required>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+        </form>
+    </div>
+
+</body>
+</html>

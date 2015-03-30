@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+	<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="thirdparty/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script  src="js/jquery.min.js"></script>
+    <script src="thirdparty/bootstrap/js/bootstrap.min.js"></script>
+    <script src="thirdparty/layer/layer.min.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        $(function () {
+            $('li.navbars').hover(function () {
+                        $(this).addClass("active");
+                    }, function () {
+                        $(this).removeClass("active");
+                    }
+            );
+            var sortWord="${sortWord}";
+            var divid="";
+            var otherid="";
+            if(sortWord.indexOf("reg_date")>=0){
+            	divid="regdt";
+            	otherid="overdt";
+            }else if(sortWord.indexOf("overdue_date")>=0){
+            	divid="overdt";
+            	otherid="regdt";
+            }
+            if(sortWord.indexOf("desc")>=0){
+            	$("#"+divid).removeClass("glyphicon-arrow-up").addClass("glyphicon-arrow-down");
+            }else{
+            	$("#"+divid).removeClass("glyphicon-arrow-down").addClass("glyphicon-arrow-up");
+            }
+            $("#"+otherid).addClass("grey_color");
+        });
+        function toEditMember(uid){
+            $.layer({
+                type: 2,
+                maxmin: true,
+                shadeClose: true,
+                title: '修改会员   '+uid,
+                shade: [0.1,'#fff'],
+                offset: ['100px',''],
+                area: ['700px', ($(window).height() - 200) +'px'],
+                iframe: {src: 'toEmember.do?user_id='+uid}
+            });
+        }
+        function toRenew(uid){
+            $.layer({
+                type: 2,
+                maxmin: true,
+                shadeClose: true,
+                title: '续费  '+uid,
+                shade: [0.1,'#fff'],
+                offset: ['100px',''],
+                area: ['600px', ($(window).height() - 240) +'px'],
+                iframe: {src:  'toRenew.do?user_id='+uid}
+            });
+        }
+        function toRenew_history(uid){
+            $.layer({
+                type: 2,
+                maxmin: true,
+                shadeClose: true,
+                title: '历史续费信息  '+uid,
+                shade: [0.1,'#fff'],
+                offset: ['100px',''],
+                area: ['800px', ($(window).height() - 240) +'px'],
+                iframe: {src:  'toRenew_history.do?user_id='+uid}
+            });
+        }
+        function table_fy(p){
+            var form = document.getElementById("search_form");
+            form.option.value=document.getElementById("option").value;
+            form.keyWord.value=document.getElementById("keyWord").value;
+            form.startdt.value=document.getElementById("startdt").value;
+            form.enddt.value=document.getElementById("enddt").value;
+            form.vip.value=document.getElementById("vip_select").value;
+            form.manager.value=document.getElementById("manager_select").value;
+            form.sortWord.value=document.getElementById("sortWord").innerHTML;
+            form.pageNow.value=p;
+            form.submit();
+        }
+        function search(){
+            var form = document.getElementById("search_form");
+            form.option.value=document.getElementById("option").value;
+            form.keyWord.value=document.getElementById("keyWord").value;
+            form.startdt.value=document.getElementById("startdt").value;
+            form.enddt.value=document.getElementById("enddt").value;
+            form.manager.value=document.getElementById("manager_select").value;
+            form.vip.value=document.getElementById("vip_select").value;
+            form.sortWord.value=document.getElementById("sortWord").innerHTML;
+            form.submit();
+        }
+        function sort(divid){
+            var sortWord= getSortWord(divid);
+            document.getElementById("sortWord").innerHTML=sortWord;
+            var form = document.getElementById("search_form");
+            form.option.value=document.getElementById("option").value;
+            form.keyWord.value=document.getElementById("keyWord").value;
+            form.startdt.value=document.getElementById("startdt").value;
+            form.enddt.value=document.getElementById("enddt").value;
+            form.manager.value=document.getElementById("manager_select").value;
+            form.vip.value=document.getElementById("vip_select").value;
+            form.sortWord.value=sortWord;
+            form.submit();
+         }
+
+         function getSortWord(divid){
+             var strClass=$("#"+divid).prop("class");
+             var sortColumn="";
+             if(divid=="regdt"){
+                 sortColumn="reg_date";
+             }else if(divid=="overdt"){
+                 sortColumn="overdue_date";
+             }
+             if(strClass.indexOf("up")>=0){
+                 return " nvl(to_char("+sortColumn+",'yyyy-MM-dd'),'1000-01-01') desc";
+             }else if(strClass.indexOf("down")>=0){
+                 return sortColumn;
+             }
+         }
+    </script>
+    <title>用户管理</title>
+</head>
+<body>
+<#include "/WEB-INF/ftl/macro.ftl">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header" style="margin-top: 5px;">
+                <img class="img-rounded" src="images/logo.jpg" width="40px;" height="40px;" >
+            </div>
+            <div class="navbar-header" style="margin-left: 10px;">
+                <a class="navbar-brand" href="login.html">专利通管理工具</a>
+            </div>
+            <div class="collapse navbar-collapse pull-right">
+                <ul class="nav navbar-nav">
+                    <li class="navbars"><a href="listMembers.do"><span class="glyphicon glyphicon-user"></span><span style="margin-left: 8px;">用户管理</span></a></li>
+                    <li class="navbars"><a href="anls_member.do"><span class="glyphicon glyphicon-edit"></span><span style="margin-left: 8px;">访问统计</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container main">
+        <div class="row"  style="padding-bottom:8px;border-bottom: solid 1px #eee;">
+            <div class="col-md-12">
+                <a class="btn btn-primary disabled" href="#" role="button">添加会员</a>
+                <a class="btn btn-primary" href="listRenews.do" role="button">查询续费信息</a>
+            </div>
+        </div>
+          <form class="form-inline form_block">
+            <div class="form-group">
+                <label>到期时间：</label>
+                <input class="form-control" type="date" id="startdt" value="${(startdt)!''}">
+                <label> - </label>
+                <input class="form-control" type="date" id="enddt" value="${(enddt)!''}">
+            </div>
+            <div class="form-group space_left">
+                <select class="form-control" id="vip_select" onchange="search()">
+                    <option value="">会员等级</option>
+                    <option value="1" <#if vip?exists && vip=='1'>selected</#if>>VIP用户</option>
+                    <option value="0" <#if vip?exists && vip=='0'>selected</#if>>普通用户</option>
+                </select>
+                <select class="form-control" id="manager_select" onchange="search()">
+                    <option value="">销售经理</option>
+                    <option value="陈冰梦" <#if manager?exists && manager=='陈冰梦'>selected</#if>>陈冰梦</option>
+                    <option value="胡永兰" <#if manager?exists && manager=='胡永兰'>selected</#if>>胡永兰</option>
+                    <option value="祖艺航" <#if manager?exists && manager=='祖艺航'>selected</#if>>祖艺航</option>
+                </select>
+            </div>
+            <div class="form-group pull-right">
+                <select class="form-control" id="option">
+                    <option value="" <#if option==''>selected</#if>>查询字段</option>
+                    <option value="user_id" <#if option=='user_id'>selected</#if>>机器码</option>
+                    <option value="nick_name" <#if option=='nick_name'>selected</#if>>用户名</option>
+                    <option value="province" <#if option=='province'>selected</#if>>省份</option>
+                    <option value="city" <#if option=='city'>selected</#if>>城市</option>
+                    <option value="remark" <#if option=='remark'>selected</#if>>备注</option>
+                    <option value="equipment" <#if option=='equipment'>selected</#if>>设备型号</option>
+                </select>
+                <input class="form-control" type="text" id="keyWord" value="${(keyWord)!''}">
+                <a class="btn btn-primary" href="javascript:search();" role="button">搜索</a>
+            </div>
+        </form>
+        <table class="table table_block">
+            <thead class="table-bordered table_header">
+                <tr>
+                    <th><input class="checkbox" id="allchk" type="checkbox" onclick="allchk()"></th>
+                    <th>机器码</th>
+                    <th>用户名</th>
+                    <th>注册时间<a href="javascript:sort('regdt');"><span class="glyphicon glyphicon-arrow-down" id="regdt"></span></a> </th>
+                    <th>到期时间<a href="javascript:sort('overdt');"><span class="glyphicon glyphicon-arrow-down" id="overdt"></span></a></th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            	<#list List as info>
+                <tr>
+                    <td><input class="checkbox" type="checkbox" name="an"></td>
+                    <td>${info.user_id}</td>
+                    <td>${(info.nick_name)!''}</td>
+                    <td><#if info.reg_date?exists>${info.reg_date?string("yyyy-MM-dd")}</#if></td>
+                    <td><#if info.overdue_date?exists>${info.overdue_date?string("yyyy-MM-dd")}</#if></td>
+                    <td><a href="javascript:toRenew('${info.user_id}');">[续费]</a> <a href="javascript:toRenew_history('${info.user_id}');">[历史续费信息]</a> <a href="javascript:toEditMember('${info.user_id}');">[修改]</a> </td>
+                </tr>
+                </#list>
+                <tr class="table-bordered table_bottom">
+                    <td colspan="7"><a class="btn btn-primary disabled" href="#" role="button" style="width: 100px;">删除</a> </td>
+                </tr>
+            </tbody>
+        </table>
+	<@Pagination/>
+    </div>
+    <div class="hidden_div" id="sortWord">${sortWord}</div>
+	<form action="findMember.do" id="search_form" method="post">
+		<input type="hidden" name="option"/>
+		<input type="hidden" name="keyWord" />
+		<input type="hidden" name="startdt" />
+		<input type="hidden" name="enddt" />
+		<input type="hidden" name="manager" />
+		<input type="hidden" name="vip" />
+		<input type="hidden" name="sortWord" />
+		<input type="hidden" name="pageSize" />
+		<input type="hidden" name="pageNow" />
+    </form> 
+    <form action="editMember.do" id="edt" method="post">
+    	<input type="hidden" name="userid"/>
+    	<input type="hidden" name="nickname"/>
+    	<input type="hidden" name="regdate"/>
+    	<input type="hidden" name="overduedate" />
+    	<input type="hidden" name="isvip" />
+    	<input type="hidden" name="salesmanager" />
+    	<input type="hidden" name="province" />
+    	<input type="hidden" name="city" />
+    	<input type="hidden" name="company" />
+    	<input type="hidden" name="jobtitle" />
+    	<input type="hidden" name="contacts" />
+    	<input type="hidden" name="tel" />
+    	<input type="hidden" name="qq" />
+    	<input type="hidden" name="equipment" />
+    	<input type="hidden" name="remark" />
+		<input type="hidden" name="option" value="${(option)!''}"/>
+		<input type="hidden" name="keyWord"  value="${(keyWord)!''}"/>
+		<input type="hidden" name="startdt" value="${(startdt)!''}"/>
+		<input type="hidden" name="enddt" value="${(enddt)!''}"/>
+		<input type="hidden" name="manager" value="${(manager)!''}"/>
+		<input type="hidden" name="vip" value="${(vip)!''}"/>
+		<input type="hidden" name="sortWord" value="${(sortWord)!''}"/>
+		<input type="hidden" name="pageSize" value="${(pageSize)!''}"/>
+		<input type="hidden" name="pageNow" value="${(pageNow)!''}"/>
+    </form>    
+    <form action="renew.do" id="rn" method="post">
+    	<input type="hidden" name="userid"/>
+    	<input type="hidden" name="renewyear" />
+    	<input type="hidden" name="renewto" />
+    	<input type="hidden" name="remark" />
+    	<input type="hidden" name="option" value="${(option)!''}"/>
+		<input type="hidden" name="keyWord" value="${(keyWord)!''}"/>
+		<input type="hidden" name="startdt"  value="${(startdt)!''}"/>
+		<input type="hidden" name="enddt" value="${(enddt)!''}"/>
+		<input type="hidden" name="manager"  value="${(manager)!''}"/>
+		<input type="hidden" name="vip" value="${(vip)!''}"/>
+		<input type="hidden" name="sortWord" value="${(sortWord)!''}"/>
+		<input type="hidden" name="pageSize"  value="${(pageSize)!''}"/>
+		<input type="hidden" name="pageNow"  value="${(pageNow)!''}"/>
+    </form>       
+</body>
+</html>
