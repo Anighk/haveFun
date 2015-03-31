@@ -51,13 +51,13 @@ public class LoginAct {
 					Cookie c=new Cookie("user",userStr);
 					c.setPath("/");
 					response.addCookie(c);
-					MemberDTO dto=adminService.findUsers("1=1 order by nvl(to_char(overdue_date,'yyyy-MM-dd'),'1000-01-01') desc", 1, 10);
+					MemberDTO dto=adminService.findUsers("1=1 order by nvl(to_char(reg_date,'yyyy-MM-dd'),'1000-01-01') desc", 1, 10);
 					modelMap=BaseUtil.paginate(dto.getTotal(), 10,1, modelMap);
 					modelMap.addAttribute("List",dto.getmList());
 					modelMap.addAttribute("total",dto.getTotal());
 					modelMap.addAttribute("option","");
 					modelMap.addAttribute("keyWord","");
-					modelMap.addAttribute("sortWord","nvl(to_char(overdue_date,'yyyy-MM-dd'),'1000-01-01') desc");
+					modelMap.addAttribute("sortWord","nvl(to_char(reg_date,'yyyy-MM-dd'),'1000-01-01') desc");
 					return Constant.VIEW_PATH + "/admin/amember.html";
 				}
 		}else{

@@ -37,13 +37,13 @@ public class AdminAct {
 	public String listMembers(HttpServletRequest request,ModelMap modelMap){
 		Integer pageNow=Integer.parseInt(request.getParameter("pageNow")==null||request.getParameter("pageNow")==""?"1":request.getParameter("pageNow"));
 		Integer pageSize=Integer.parseInt(request.getParameter("pageSize")==null||request.getParameter("pageSize")==""?"10":request.getParameter("pageSize"));
-		MemberDTO dto=adminService.findUsers("1=1 order by nvl(to_char(overdue_date,'yyyy-MM-dd'),'1000-01-01') desc", pageNow, pageSize);
+		MemberDTO dto=adminService.findUsers("1=1 order by nvl(to_char(reg_date,'yyyy-MM-dd'),'1000-01-01') desc", pageNow, pageSize);
 		modelMap=paginate(dto.getTotal(),pageSize,pageNow,modelMap);
 		modelMap.addAttribute("List",dto.getmList());
 		modelMap.addAttribute("total",dto.getTotal());
 		modelMap.addAttribute("option","");
 		modelMap.addAttribute("keyWord","");
-		modelMap.addAttribute("sortWord","nvl(to_char(overdue_date,'yyyy-MM-dd'),'1000-01-01') desc");
+		modelMap.addAttribute("sortWord","nvl(to_char(reg_date,'yyyy-MM-dd'),'1000-01-01') desc");
 		return Constant.VIEW_PATH+"admin/amember.html";
 	}
 	

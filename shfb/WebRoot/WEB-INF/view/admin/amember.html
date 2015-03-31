@@ -71,6 +71,19 @@
                 iframe: {src:  'toRenew_history.do?user_id='+uid}
             });
         }
+        
+        function toViewMember(uid){
+            $.layer({
+                type: 2,
+                maxmin: true,
+                shadeClose: true,
+                title: '修改会员   '+uid,
+                shade: [0.1,'#fff'],
+                offset: ['100px',''],
+                area: ['600px', ($(window).height() - 200) +'px'],
+                iframe: {src: 'toMember_view.do?user_id='+uid}
+            });
+        }
         function table_fy(p){
             var form = document.getElementById("search_form");
             form.option.value=document.getElementById("option").value;
@@ -147,7 +160,7 @@
     <div class="container main">
         <div class="row"  style="padding-bottom:8px;border-bottom: solid 1px #eee;">
             <div class="col-md-12">
-                <a class="btn btn-primary disabled" href="#" role="button">添加会员</a>
+                <a class="btn btn-primary disabled" href="#" style="width: 100px;" role="button">添加会员</a>
                 <a class="btn btn-primary" href="listRenews.do" role="button">查询续费信息</a>
             </div>
         </div>
@@ -200,7 +213,7 @@
             	<#list List as info>
                 <tr>
                     <td><input class="checkbox" type="checkbox" name="an"></td>
-                    <td>${info.user_id}</td>
+                    <td><a href="javascript:toViewMember('${info.user_id}');">${info.user_id}</a></td>
                     <td>${(info.nick_name)!''}</td>
                     <td><#if info.reg_date?exists>${info.reg_date?string("yyyy-MM-dd")}</#if></td>
                     <td><#if info.overdue_date?exists>${info.overdue_date?string("yyyy-MM-dd")}</#if></td>
