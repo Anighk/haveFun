@@ -28,6 +28,7 @@
 .panel_body ul{float:left;display: block;width: 100%;}
 .panel_body_form{padding: 15px;}
 .li_title{width:120px;}
+.li_primary_content{width: 200px;}
 .label_content{font-weight: normal;}
 .select_width{width: 120px;margin:0 5px;}
 .full_width{width:100%;}

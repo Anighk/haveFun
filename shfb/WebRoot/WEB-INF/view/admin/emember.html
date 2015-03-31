@@ -60,8 +60,8 @@
             <ul class="list-unstyled list-inline">
                 <li class="li_title"><label>机器码：</label></li><li >${info.user_id}</li><li class="fr"><a href="#">历史续费信息</a> </li><li class="fr"><a href="javascript:toRenew('${info.user_id}');">去续费</a> </li>
             </ul >
-            <ul class="list-unstyled list-inline"><li class="li_title"><label>过期时间：</label></li><li><input class="form-control" id="overduedate" type="date" value="<#if info.overdue_date?exists>${info.overdue_date?string("yyyy-MM-dd")}</#if>" disabled></li></ul>
-            <ul class="list-unstyled list-inline"><li class="li_title"><label>用户名：</label></li><li><input class="form-control" id="nickname" type="text" value="${(info.nick_name)!''}"></li></ul>
+            <ul class="list-unstyled list-inline"><li class="li_title"><label>过期时间：</label></li><li><input class="form-control li_primary_content" id="overduedate" type="date" value="<#if info.overdue_date?exists>${info.overdue_date?string("yyyy-MM-dd")}</#if>" disabled></li></ul>
+            <ul class="list-unstyled list-inline"><li class="li_title"><label>用户名：</label></li><li><input class="form-control li_primary_content" id="nickname" type="text" value="${(info.nick_name)!''}"></li></ul>
             <ul class="list-unstyled list-inline"><li class="li_title"><label>vip会员：</label></li><li><label class="label_content" for="vipcheck">是否为vip会员</label></li><li><input class="checkbox" type="checkbox" id="vipcheck" <#if info.isvip?exists && info.isvip=='1'>checked</#if>></li></ul>
             <ul class="list-unstyled list-inline">
                 <li class="li_title"><label>销售经理：</label></li>
@@ -76,7 +76,7 @@
         <div class="panel-body">
             <form class="form-horizontal panel_body_form">
                 <div class="form-group full_width fl">
-                    <label class="control-label fl li_title">省份：</label>
+                    <label class="control-label li_title">省份：</label>
                     <input class="form-control li_content" id="province" type="text" value="${(info.province)!''}">
                 </div>
                 <div class="form-group full_width fl">
@@ -108,8 +108,8 @@
                     <input class="form-control li_content" id="equipment" type="text" value="${(info.equipment)!''}">
                 </div>
                 <div class="form-group full_width fl">
-                    <label class="control-label li_title">备注：</label>
-                    <input class="form-control li_content" id="remark" type="text" value="${(info.remark)!''}">
+                    <label class="control-label li_title fl">备注：</label>
+                    <textarea class="form-control li_content" style="height: 120px;margin-left: 4px;" id="remark">${(info.remark)!''}</textarea>
                 </div>
             </form>
         </div>
