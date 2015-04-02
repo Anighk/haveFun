@@ -29,5 +29,14 @@ public class JumpAct {
 		modelMap.addAttribute("info",dto.getList().get(0));
 		return Constant.VIEW_PATH + "news/edit.html";
 	}
+	
+	@RequestMapping("/toViewNews.do")
+	public String toViewNews(HttpServletRequest request,ModelMap modelMap) {
+		String id=request.getParameter("id");
+		String strWhere=" id='"+id+"'";
+		NewsDTO dto=adminService.findNews(strWhere, 1, 1);
+		modelMap.addAttribute("info",dto.getList().get(0));
+		return Constant.VIEW_PATH + "news/view.html";
+	}
 
 }

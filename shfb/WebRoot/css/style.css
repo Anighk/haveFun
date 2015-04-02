@@ -76,3 +76,9 @@
 .content_div_mb{margin-bottom: 20px;}
 
 .table_header tr th{min-width: 65px;}
+
+/*新闻阅览*/
+.page-info{margin:5px 0 }
+.page-body{margin: 10px 0}
+.page-body-img{margin: 10px 0}
+.page-body-content{margin: 10px 0}

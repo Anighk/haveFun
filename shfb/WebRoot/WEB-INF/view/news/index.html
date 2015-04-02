@@ -127,7 +127,7 @@
                 <tr>
                     <td><input class="checkbox" type="checkbox" name="an"></td>
                     <td>${info.id}</td>
-                    <td>${info.title}</td>
+                    <td><a href="toViewNews.do?id=${info.id}" target="_blank">${info.title}</a></td>
                     <td>${(info.author)!''}</td>
                     <td>${(info.source)!''}</td>
                     <td><#if info.release_date?exists>${info.release_date?string("yyyy-MM-dd HH:mm")}</#if></td>

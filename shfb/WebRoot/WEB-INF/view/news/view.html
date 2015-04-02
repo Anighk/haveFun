@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="thirdparty/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="thirdparty/bootstrap/js/bootstrap.min.js"></script>
+    <script src="thirdparty/layer/layer.min.js"></script>
+    <title>新闻阅览</title>
+</head>
+<body>
+<div class="container">
+    <div class="page-header">
+        <h1>${(info.title)!''}</h1>
+    </div>
+    <div class="page-info">
+        <span><#if info.release_date?exists>${info.release_date?string("yyyy-MM-dd HH:mm")}</#if>&nbsp;&nbsp;&nbsp;&nbsp;${(info.author)!''}&nbsp;&nbsp;&nbsp;&nbsp;${(info.source)!''}</span>
+    </div>
+    <div class="page-body">
+    	<#if info.imgpath?exists>
+        <div class="page-body-img">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8"><img src="img/${info.imgpath}" style="max-width: 800px;"></div>
+                    <div class="col-md-2"></div>
+                </div>
+            </div>
+        </div>
+        </#if>
+        <div class="page-body-content">
+        	${(info.content)!''}
+        </div>
+    </div>
+</div>
+</body>
+</html>
