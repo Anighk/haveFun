@@ -126,6 +126,28 @@ public class AdminAct {
 		return Constant.VIEW_PATH+"admin/renews.html";
 	}
 	
+	@RequestMapping("/findNews.do")
+	public String findNews(HttpServletRequest request,ModelMap modelMap){
+		Integer pageNow=Integer.parseInt(request.getParameter("pageNow")==""?"1":request.getParameter("pageNow"));
+		Integer pageSize=Integer.parseInt(request.getParameter("pageSize")==""?"10":request.getParameter("pageSize"));
+		String option=request.getParameter("option");
+		String keyWord=request.getParameter("keyWord");
+		String startdt=request.getParameter("startdt");
+		String enddt=request.getParameter("enddt");
+		String sortWord=request.getParameter("sortWord");
+		String strWhere=getNewsCondition(option,keyWord,startdt,enddt,sortWord);
+		NewsDTO dto=adminService.findNews(strWhere, pageNow, pageSize);
+		modelMap=paginate(dto.getTotal(),pageSize,pageNow,modelMap);
+		modelMap.addAttribute("List",dto.getList());
+		modelMap.addAttribute("total",dto.getTotal());
+		modelMap.addAttribute("option",option);
+		modelMap.addAttribute("keyWord",keyWord);
+		modelMap.addAttribute("startdt",startdt);
+		modelMap.addAttribute("enddt",enddt);
+		modelMap.addAttribute("sortWord",sortWord);
+		return Constant.VIEW_PATH+"news/index.html";
+	}
+	
 	@RequestMapping("/toEmember.do")
 	public String toEditMember(HttpServletRequest request,ModelMap modelMap){
 		String userid=request.getParameter("user_id");
@@ -292,9 +314,8 @@ public class AdminAct {
 	}
 	
 	
-	@RequestMapping("/editNews.do")
-	public String editNews(HttpServletRequest request,ModelMap modelMap,MultipartFile myfile){
-		String id=request.getParameter("id")==null||request.getParameter("id")==""?null:request.getParameter("id");
+	@RequestMapping("/addNews.do")
+	public String addNews(HttpServletRequest request,ModelMap modelMap,MultipartFile myfile){
 		String title=request.getParameter("title");
 		String author=request.getParameter("author");
 		String source=request.getParameter("source");
@@ -302,16 +323,52 @@ public class AdminAct {
 		String content=request.getParameter("content");
 		
 		News nw=new News();
-		if(id!=null){
-			nw.setId(Integer.parseInt(id));
-		}
 		nw.setTitle(title);
 		nw.setAuthor(author);
 		nw.setSource(source);
 		nw.setContent(content);
 		nw.setEdit_date(new Date());
-		nw.setRelease_date(BaseUtil.StringToDate(reldt, "yyyy-MM-dd"));
+		if(reldt!=null){
+			reldt=reldt.replace("T"," ");
+			nw.setRelease_date(BaseUtil.StringToDate(reldt, "yyyy-MM-dd HH:mm"));
+		}else{
+			nw.setRelease_date(new Date());
+		}
 		nw.setImgpath(BaseUtil.saveImgAndReturnPath(myfile));
+		NewsDTO dto=adminService.editNews(nw, " 1=1 order by edit_date desc",1,10);
+		modelMap=paginate(dto.getTotal(),10,1,modelMap);
+		modelMap.addAttribute("List",dto.getList());
+		modelMap.addAttribute("total",dto.getTotal());
+		modelMap.addAttribute("option","");
+		modelMap.addAttribute("keyWord","");
+		modelMap.addAttribute("sortWord"," 1=1 order by edit_date desc");
+		return Constant.VIEW_PATH+"news/index.html";
+	}
+	
+	@RequestMapping("/editNews.do")
+	public String editNews(HttpServletRequest request,ModelMap modelMap){
+		String id=request.getParameter("id");
+		String title=request.getParameter("title");
+		String author=request.getParameter("author");
+		String source=request.getParameter("source");
+		String reldt=request.getParameter("reldt");
+		String imgpath=request.getParameter("imgpath");
+		String content=request.getParameter("content");
+		
+		News nw=new News();
+		nw.setId(Integer.parseInt(id));
+		nw.setTitle(title);
+		nw.setAuthor(author);
+		nw.setSource(source);
+		nw.setContent(content);
+		nw.setImgpath(imgpath);
+		nw.setEdit_date(new Date());
+		if(reldt!=null){
+			reldt=reldt.replace("T"," ");
+			nw.setRelease_date(BaseUtil.StringToDate(reldt, "yyyy-MM-dd HH:mm"));
+		}else{
+			nw.setRelease_date(new Date());
+		}
 		NewsDTO dto=adminService.editNews(nw, " 1=1 order by edit_date desc",1,10);
 		modelMap=paginate(dto.getTotal(),10,1,modelMap);
 		modelMap.addAttribute("List",dto.getList());
@@ -380,6 +437,21 @@ public class AdminAct {
 			if(enddt!=null&&!"".equals(enddt)){
 				condition+=" and renew_date<=to_date('"+enddt+"','yyyy-MM-dd') ";
 			}
+		}
+		condition+=" order by "+sortWord;
+		return condition;
+	}
+	
+	private String getNewsCondition(String option,String keyWord,String startdt,String enddt,String sortWord){
+		String condition=" 1=1 ";
+		if(option!=null&&!"".equals(option)){
+			condition+=" and "+option +" like '%"+keyWord+"%' ";
+		}
+		if(startdt!=null&&!"".equals(startdt)){
+			condition+=" and release_date>=to_date('"+startdt+"','yyyy-MM-dd') ";
+		}
+		if(enddt!=null&&!"".equals(enddt)){
+			condition+=" and release_date<=to_date('"+enddt+"','yyyy-MM-dd') ";
 		}
 		condition+=" order by "+sortWord;
 		return condition;

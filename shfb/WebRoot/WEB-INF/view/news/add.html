@@ -28,22 +28,22 @@
     <div class="panel panel-info">
         <div class="panel-heading">添加新闻</div>
         <div class="panel-body">
-            <form class="form-horizontal panel_body_form" id="edt" action="editNews.do" method="post" enctype="multipart/form-data">
+            <form class="form-horizontal panel_body_form" id="edt" action="addNews.do" method="post" enctype="multipart/form-data">
                 <div class="form-group full_width fl">
                     <label class="control-label li_title fl">标题：</label>
-                    <textarea class="form-control li_content" style="height: 120px;margin-left: 4px;" id="title" name="title">${(info.title)!''}</textarea>
+                    <textarea class="form-control li_content" style="height: 120px;margin-left: 4px;" id="title" name="title"></textarea>
                 </div>
                 <div class="form-group full_width fl">
                     <label class="control-label li_title">作者：</label>
-                    <input class="form-control li_content" id="author" name="author" type="text" value="${(info.author)!''}">
+                    <input class="form-control li_content" id="author" name="author" type="text" >
                 </div>
                 <div class="form-group full_width fl">
                     <label class="control-label li_title">来源：</label>
-                    <input class="form-control li_content" id="source" name="source" type="text" value="${(info.source)!''}">
+                    <input class="form-control li_content" id="source" name="source" type="text" >
                 </div>
                 <div class="form-group full_width fl">
                     <label class="control-label li_title">发布时间：</label>
-                    <input class="form-control li_content" id="release_date" name="reldt" type="date" value="${(info.release_date)!''}">
+                    <input class="form-control li_content" id="release_date" name="reldt" type="datetime-local" >
                 </div>
                 <div class="form-group full_width fl">
                     <label class="control-label li_title">图片：</label>

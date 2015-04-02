@@ -124,6 +124,9 @@ public class BaseUtil {
 	 * @throws ParseException 转换异常
 	 */
 	public static Date StringToDate(String dateStr,String formatStr){
+		if(dateStr==null||"".equals(dateStr)){
+			return new Date();
+		}
 		DateFormat sdf=new SimpleDateFormat(formatStr);
 		Date date=null;
 		try {

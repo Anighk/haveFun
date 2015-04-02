@@ -18,6 +18,13 @@
                         $(this).removeClass("active");
                     }
             );
+            var sortWord="${sortWord}";
+            var divid="reldt";
+            if(sortWord.indexOf("desc")>=0){
+            	$("#"+divid).removeClass("glyphicon-arrow-up").addClass("glyphicon-arrow-down");
+            }else{
+            	$("#"+divid).removeClass("glyphicon-arrow-down").addClass("glyphicon-arrow-up");
+            }
         });
 
         function table_fy(p){
@@ -29,9 +36,27 @@
             form.pageNow.value=p;
             form.submit();
         }
+        
+        function search(){
+            var form = document.getElementById("search_form");
+            form.option.value=document.getElementById("option").value;
+            form.keyWord.value=document.getElementById("keyWord").value;
+            form.startdt.value=document.getElementById("startdt").value;
+            form.enddt.value=document.getElementById("enddt").value;
+            form.sortWord.value=document.getElementById("sortWord").innerHTML;
+            form.submit();
+        }
+        
         function sort(divid){
            var sortWord= sortSelect(divid)+swtichUpDowm(divid);
-            alert(sortWord);
+           document.getElementById("sortWord").innerHTML=sortWord;
+           var form = document.getElementById("search_form");
+           form.option.value=document.getElementById("option").value;
+           form.keyWord.value=document.getElementById("keyWord").value;
+           form.startdt.value=document.getElementById("startdt").value;
+           form.enddt.value=document.getElementById("enddt").value;
+           form.sortWord.value=sortWord;
+           form.submit();
         }
 
         function swtichUpDowm(divid){
@@ -68,20 +93,21 @@
         <form class="form-inline form_block">
             <div class="form-group">
                 <label>发布时间：</label>
-                <input class="form-control" type="date">
+                <input class="form-control" type="date" id="startdt" value="${(startdt)!''}">
                 <label> - </label>
-                <input class="form-control" type="date">
+                <input class="form-control" type="date" id="enddt" value="${(enddt)!''}">
             </div>
             <div class="form-group pull-right">
                 <select class="form-control" id="option">
-                    <option>新闻ID</option>
-                    <option>标题</option>
-                    <option>作者</option>
-                    <option>内容</option>
-                    <option>来源</option>
+                	<option value="" <#if option==''>selected</#if>>查询字段</option>
+                    <option value="id" <#if option=='id'>selected</#if>>新闻ID</option>
+                    <option value="title" <#if option=='title'>selected</#if>>标题</option>
+                    <option value="author" <#if option=='author'>selected</#if>>作者</option>
+                    <option value="content" <#if option=='content'>selected</#if>>内容</option>
+                    <option value="source" <#if option=='source'>selected</#if>>来源</option>
                 </select>
-                <input class="form-control" type="text" id="keyWord">
-                <a class="btn btn-primary" href="#" role="button">搜索</a>
+                <input class="form-control" type="text" id="keyWord" value="${(keyWord)!''}">
+                <a class="btn btn-primary" href="javascript:search();" role="button">搜索</a>
             </div>
         </form>
         <table class="table table_block">
@@ -104,8 +130,8 @@
                     <td>${info.title}</td>
                     <td>${(info.author)!''}</td>
                     <td>${(info.source)!''}</td>
-                    <td><#if info.release_date?exists>${info.release_date?string("yyyy-MM-dd")}</#if></td>
-                    <td><a href="javascript:toEditNews();">[修改]</a> </td>
+                    <td><#if info.release_date?exists>${info.release_date?string("yyyy-MM-dd HH:mm")}</#if></td>
+                    <td><a href="toEditNews.do?id=${info.id}">[修改]</a> </td>
                 </tr>
              </#list>
 
@@ -116,14 +142,13 @@
         </table>
 		<@Pagination/>
     </div>
-    <div class="hidden_div" id="pageNow">${pageNow}</div>
-    <div class="hidden_div" id="pageSize">${pageSize}</div>
     <div class="hidden_div" id="sortWord">${sortWord}</div>
     <form action="findNews.do" id="search_form" method="post">
         <input type="hidden" name="option"/>
         <input type="hidden" name="keyWord" />
         <input type="hidden" name="startdt" />
         <input type="hidden" name="enddt" />
+        <input type="hidden" name="sortWord" />
         <input type="hidden" name="pageSize" />
         <input type="hidden" name="pageNow" />
     </form>
