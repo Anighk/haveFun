@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="thirdparty/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="thirdparty/ueditor/themes/default/css/ueditor.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script  src="js/jquery.min.js"></script>
+    <script src="thirdparty/bootstrap/js/bootstrap.min.js"></script>
+    <script src="thirdparty/layer/layer.min.js"></script>
+    <script src="thirdparty/ueditor/ueditor.config.js"></script>
+    <script src="thirdparty/ueditor/ueditor.all.js"></script>
+    <script src="js/citylist.js"></script>
+    <script>
+        function cancelBtn(){
+            var index=parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+        }
+    </script>
+    <title>新闻添加</title>
+</head>
+<body>
+<#include "/WEB-INF/ftl/nav.ftl">
+<div class="container main">
+    <div class="panel panel-info">
+        <div class="panel-heading">添加新闻</div>
+        <div class="panel-body">
+            <form class="form-horizontal panel_body_form" id="edt" action="editNews.do" method="post" enctype="multipart/form-data">
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title fl">标题：</label>
+                    <textarea class="form-control li_content" style="height: 120px;margin-left: 4px;" id="title" name="title">${(info.title)!''}</textarea>
+                </div>
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title">作者：</label>
+                    <input class="form-control li_content" id="author" name="author" type="text" value="${(info.author)!''}">
+                </div>
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title">来源：</label>
+                    <input class="form-control li_content" id="source" name="source" type="text" value="${(info.source)!''}">
+                </div>
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title">发布时间：</label>
+                    <input class="form-control li_content" id="release_date" name="reldt" type="date" value="${(info.release_date)!''}">
+                </div>
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title">图片：</label>
+                    <input class="form-control" style="width: 350px;display: inline" name="myfile" id="news_img" type="file">
+                </div>
+                <div class="form-group full_width fl">
+                    <label class="control-label li_title fl">内容：</label>
+                    <div class="fl">
+                        <script id="content" type="text/plain"  style="width:900px;height:240px;"></script>
+                    </div>
+                </div>
+                <script type="text/javascript" >
+                    var ue = UE.getEditor('content');
+
+                    function confirm(){
+                        var text=ue.getContent();
+                        var edt=document.getElementById("edt");
+                        edt.content.value=text;
+                        edt.submit();
+                    }
+                </script>
+	        <input type="hidden" name="content" />                
+            </form>
+        </div>
+    </div>
+    <div class="fr footer_btns">
+        <a class="btn btn-primary footer_btn" href="javascript:confirm();" role="button">确定</a>
+        <a class="btn btn-default footer_btn" href="javascript:history.back(-1);" role="button">取消</a>
+    </div>
+</div>
+
+</body>
+</html>

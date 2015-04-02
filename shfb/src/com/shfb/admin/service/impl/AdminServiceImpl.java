@@ -4,10 +4,12 @@ import java.util.List;
 
 import com.shfb.admin.dao.AdminDao;
 import com.shfb.admin.rs.MemberDTO;
+import com.shfb.admin.rs.NewsDTO;
 import com.shfb.admin.rs.RenewDTO;
 import com.shfb.admin.service.AdminService;
 import com.shfb.common.dao.SearchDao;
 import com.shfb.common.entity.Members;
+import com.shfb.common.entity.News;
 import com.shfb.common.entity.Renew;
 import com.shfb.common.entity.Users;
 import com.shfb.common.util.BaseUtil;
@@ -76,6 +78,20 @@ public class AdminServiceImpl implements AdminService {
 	public RenewDTO findRenew_combine(String strWhere, Integer pageNow,
 			Integer pageSize) {
 		return adminDao.findRenew_combine(strWhere, pageNow, pageSize);
+	}
+	@Override
+	public NewsDTO findNews(String strWhere, Integer pageNow, Integer pageSize) {
+		return adminDao.findNews(strWhere, pageNow, pageSize);
+	}
+	@Override
+	public NewsDTO editNews(News nw, String strWhere, Integer pageNow,
+			Integer pageSize) {
+		boolean flag=adminDao.saveNews(nw);
+		NewsDTO dto=adminDao.findNews(strWhere, pageNow, pageSize);
+		if(!flag){
+			dto.setMessage("error");
+		}
+		return dto;
 	}
 
 }

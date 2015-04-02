@@ -1,8 +1,6 @@
 package com.shfb.admin.action;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,14 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.shfb.admin.rs.MemberDTO;
+import com.shfb.admin.rs.NewsDTO;
 import com.shfb.admin.rs.RenewDTO;
 import com.shfb.admin.service.AdminService;
 import com.shfb.common.entity.Members;
+import com.shfb.common.entity.News;
 import com.shfb.common.entity.Renew;
 import com.shfb.common.util.BaseUtil;
-import com.shfb.common.util.ConfigManager;
 import com.shfb.common.util.Constant;
 
 @Controller
@@ -31,7 +31,6 @@ public class AdminAct {
 	private Integer pageStart;
 	private Integer pageEnd;
 	
-	private static final String PWD_MAX_ERROR_NUM=ConfigManager.getKeyValue("pmen");
 	
 	@RequestMapping("/listMembers.do")
 	public String listMembers(HttpServletRequest request,ModelMap modelMap){
@@ -59,6 +58,20 @@ public class AdminAct {
 		modelMap.addAttribute("keyWord","");
 		modelMap.addAttribute("sortWord","nvl(to_char(renew_date,'yyyy-MM-dd'),'1000-01-01') desc");
 		return Constant.VIEW_PATH+"admin/renews.html";
+	}
+	
+	@RequestMapping("/listNews.do")
+	public String listNews(HttpServletRequest request,ModelMap modelMap){
+		Integer pageNow=Integer.parseInt(request.getParameter("pageNow")==null||request.getParameter("pageNow")==""?"1":request.getParameter("pageNow"));
+		Integer pageSize=Integer.parseInt(request.getParameter("pageSize")==null||request.getParameter("pageSize")==""?"10":request.getParameter("pageSize"));
+		NewsDTO dto=adminService.findNews("1=1 order by edit_date desc", pageNow, pageSize);
+		modelMap=paginate(dto.getTotal(),pageSize,pageNow,modelMap);
+		modelMap.addAttribute("List",dto.getList());
+		modelMap.addAttribute("total",dto.getTotal());
+		modelMap.addAttribute("option","");
+		modelMap.addAttribute("keyWord","");
+		modelMap.addAttribute("sortWord","edit_date desc");
+		return Constant.VIEW_PATH+"news/index.html";
 	}
 	
 	@RequestMapping("/findMember.do")
@@ -279,28 +292,35 @@ public class AdminAct {
 	}
 	
 	
-//	@RequestMapping("/addUser.do")
-//	public String addUser(HttpServletRequest request,ModelMap modelMap){
-//		String username=request.getParameter("username");
-//		String passwd=request.getParameter("passwd");
-//		String truename=request.getParameter("truename");
-//		String dept=request.getParameter("dept");
-//		String attr=request.getParameter("attr");
-//		Members member=new Members();
-//		MemberDTO dto=adminService.editUser(member, 1,10);
-//		if("error".equals(dto.getMessage())){
-//			modelMap.addAttribute("info",Constant.ERROR_INFO_EDITUSER);
-//			return Constant.ERROR_PATH;
-//		}
-//		modelMap=paginate(dto.getTotal(),10,1,modelMap);
-//		modelMap.addAttribute("List",dto.getmList());
-//		modelMap.addAttribute("total",dto.getTotal());
-//		modelMap.addAttribute("option","");
-//		modelMap.addAttribute("keyWord","");
-//		modelMap.addAttribute("pmen",Integer.parseInt(PWD_MAX_ERROR_NUM));
-//		modelMap.addAttribute("navIndex", "#admnav_user");
-//		return Constant.VIEW_PATH+"admin/amember.html";
-//	}
+	@RequestMapping("/editNews.do")
+	public String editNews(HttpServletRequest request,ModelMap modelMap,MultipartFile myfile){
+		String id=request.getParameter("id")==null||request.getParameter("id")==""?null:request.getParameter("id");
+		String title=request.getParameter("title");
+		String author=request.getParameter("author");
+		String source=request.getParameter("source");
+		String reldt=request.getParameter("reldt");
+		String content=request.getParameter("content");
+		
+		News nw=new News();
+		if(id!=null){
+			nw.setId(Integer.parseInt(id));
+		}
+		nw.setTitle(title);
+		nw.setAuthor(author);
+		nw.setSource(source);
+		nw.setContent(content);
+		nw.setEdit_date(new Date());
+		nw.setRelease_date(BaseUtil.StringToDate(reldt, "yyyy-MM-dd"));
+		nw.setImgpath(BaseUtil.saveImgAndReturnPath(myfile));
+		NewsDTO dto=adminService.editNews(nw, " 1=1 order by edit_date desc",1,10);
+		modelMap=paginate(dto.getTotal(),10,1,modelMap);
+		modelMap.addAttribute("List",dto.getList());
+		modelMap.addAttribute("total",dto.getTotal());
+		modelMap.addAttribute("option","");
+		modelMap.addAttribute("keyWord","");
+		modelMap.addAttribute("sortWord"," 1=1 order by edit_date desc");
+		return Constant.VIEW_PATH+"news/index.html";
+	}
 	
 	
 	/**分页设置*/
@@ -334,15 +354,6 @@ public class AdminAct {
 	}
 	
 	
-	@RequestMapping("/toEditUser.do")
-	public String toEditUser(HttpServletRequest request,ModelMap modelMap){
-		String[] properties={"id","username","truename","dept","passwd","attr","isfirst"};
-		String errors=request.getParameter("errors");
-		modelMap.addAttribute("errors",Integer.parseInt(errors));
-		modelMap=BaseUtil.transAssign(request, modelMap, properties);
-		modelMap.addAttribute("pmen",Integer.parseInt(PWD_MAX_ERROR_NUM));
-		return Constant.VIEW_PATH+"admin/euser.html";
-	}
 	
 	private String getCommonCondition(String option,String keyWord,String startdt,String enddt,String manager,String vip,String sortWord,String func){
 		String condition=" 1=1 ";

@@ -8,13 +8,10 @@ import java.util.List;
 import com.shfb.common.dao.AnalysisDao;
 import com.shfb.common.rs.dto.AnlsDTO;
 import com.shfb.common.rs.dto.Anls_Name_DTO;
-import com.shfb.common.rs.dto.ProjAnlsDTO;
 import com.shfb.common.rs.info.AnlsInfo;
 import com.shfb.common.rs.info.Anls_Name;
 import com.shfb.common.rs.info.CountInfo;
 import com.shfb.common.service.AnalysisService;
-import com.shfb.common.util.BaseUtil;
-import com.shfb.common.util.Constant;
 
 
 public class AnalysisServiceImpl implements AnalysisService {
@@ -136,16 +133,6 @@ public class AnalysisServiceImpl implements AnalysisService {
 		return sb.toString();
 	}
 	
-	//根据分析类型选择合适的展示图
-	private String getChartType(String anlsType){
-		if("ad".equals(anlsType)||"pd".equals(anlsType)){
-			return "line(\'"+BaseUtil.getAnlsName(anlsType)+"\',xAxis,yName,series,'container')";
-		}else if("inn".equals(anlsType)||"agt".equals(anlsType)||"np".equals(anlsType)){
-			return "column(\'"+BaseUtil.getAnlsName(anlsType)+"\',xAxis,yName,series,'container')";
-		}else{
-			return "pieBasic(\'"+BaseUtil.getAnlsName(anlsType)+"\',data,'container')";
-		}
-	}
 	
 	//标引项分析饼图数据的生成
 	private String getSignData(List<CountInfo> list){

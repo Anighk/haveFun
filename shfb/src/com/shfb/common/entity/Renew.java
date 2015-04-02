@@ -11,8 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.shfb.common.util.Constant;
+
 @Entity
-@Table(name = "renew_info")
+@Table(name = Constant.TABLE_RENEW)
 @SequenceGenerator(name="seqrenew",sequenceName="seqrenew",allocationSize=1)
 public class Renew implements Serializable {
 	private static final long serialVersionUID = 2241067498014268799L;

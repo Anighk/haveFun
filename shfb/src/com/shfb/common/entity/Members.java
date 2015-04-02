@@ -7,8 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.shfb.common.util.Constant;
+
 @Entity
-@Table(name = "zlt_user")
+@Table(name = Constant.TABLE_MEMBERS)
 public class Members implements Serializable {
 	private static final long serialVersionUID = 8132269427379848317L;
 	@Id

@@ -5,9 +5,11 @@ import java.util.List;
 
 import com.shfb.admin.dao.AdminDao;
 import com.shfb.admin.rs.MemberDTO;
+import com.shfb.admin.rs.NewsDTO;
 import com.shfb.admin.rs.RenewDTO;
 import com.shfb.common.dao.BaseDao;
 import com.shfb.common.entity.Members;
+import com.shfb.common.entity.News;
 import com.shfb.common.entity.Renew;
 import com.shfb.common.entity.Users;
 import com.shfb.common.util.Constant;
@@ -106,6 +108,33 @@ public class AdminDaoImpl implements AdminDao {
 		list=baseDao.query(hql, pageNow, pageSize);
 		dto.setList(list);
 		hql=" select count(*) from Renew r,Members m where r.user_id=m.user_id and "+strWhere;
+		String count=baseDao.query(hql).get(0).toString();
+		dto.setTotal(Integer.parseInt(count));
+		return dto;
+	}
+	@Override
+	public boolean saveNews(News nw) {
+		try{
+			baseDao.saveOrUpdate(nw);
+		}catch(Exception e){
+			return false;
+		}
+		return true;
+	}
+	@Override
+	public NewsDTO findNews(String strWhere, Integer pageNow, Integer pageSize) {
+		NewsDTO dto=new NewsDTO();
+		if(strWhere!=null){
+			strWhere=strWhere.trim();
+		}
+		if(strWhere!=null&&!"".equals(strWhere)){
+			strWhere="where "+strWhere;
+		}
+		String hql=" from News "+strWhere;
+		List<News> list=new ArrayList<News>();
+		list=baseDao.query(hql, pageNow, pageSize);
+		dto.setList(list);
+		hql=" select count(*) from News "+strWhere;
 		String count=baseDao.query(hql).get(0).toString();
 		dto.setTotal(Integer.parseInt(count));
 		return dto;

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="thirdparty/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script  src="js/jquery.min.js"></script>
+    <script src="thirdparty/bootstrap/js/bootstrap.min.js"></script>
+    <script src="thirdparty/layer/layer.min.js"></script>
+    <script>
+        $(function () {
+            $('li.navbars').hover(function () {
+                        $(this).addClass("active");
+                    }, function () {
+                        $(this).removeClass("active");
+                    }
+            );
+        });
+
+        function table_fy(p){
+            var form = document.getElementById("search_form");
+            form.option.value=document.getElementById("option").value;
+            form.keyWord.value=document.getElementById("keyWord").value;
+            form.startdt.value=document.getElementById("startdt").value;
+            form.enddt.value=document.getElementById("enddt").value;
+            form.pageNow.value=p;
+            form.submit();
+        }
+        function sort(divid){
+           var sortWord= sortSelect(divid)+swtichUpDowm(divid);
+            alert(sortWord);
+        }
+
+        function swtichUpDowm(divid){
+            var strClass=$("#"+divid).prop("class");
+            if(strClass.indexOf("up")>=0){
+                $("#"+divid).removeClass("glyphicon-arrow-up").addClass("glyphicon-arrow-down");
+                return " desc";
+            }else if(strClass.indexOf("down")>=0){
+                $("#"+divid).removeClass("glyphicon-arrow-down").addClass("glyphicon-arrow-up");
+                return "";
+            }
+        }
+
+        function sortSelect(divid){
+            var sortColumn="";
+            if(divid=="reldt"){
+                sortColumn=" nvl(to_char(release_date,'yyyy-MM-dd'),'1000-01-01')";
+            }
+            return sortColumn;
+        }
+    </script>
+    <title>新闻管理</title>
+</head>
+<body>
+<#include "/WEB-INF/ftl/nav.ftl">
+<#include "/WEB-INF/ftl/macro.ftl">
+
+    <div class="container main">
+        <div class="row"  style="padding-bottom:8px;border-bottom: solid 1px #eee;">
+            <div class="col-md-12">
+                <a class="btn btn-primary" href="toAddNews.do" style="width: 100px;" role="button">添加新闻</a>
+            </div>
+        </div>
+        <form class="form-inline form_block">
+            <div class="form-group">
+                <label>发布时间：</label>
+                <input class="form-control" type="date">
+                <label> - </label>
+                <input class="form-control" type="date">
+            </div>
+            <div class="form-group pull-right">
+                <select class="form-control" id="option">
+                    <option>新闻ID</option>
+                    <option>标题</option>
+                    <option>作者</option>
+                    <option>内容</option>
+                    <option>来源</option>
+                </select>
+                <input class="form-control" type="text" id="keyWord">
+                <a class="btn btn-primary" href="#" role="button">搜索</a>
+            </div>
+        </form>
+        <table class="table table_block">
+            <thead class="table-bordered table_header">
+                <tr>
+                    <th><input class="checkbox" type="checkbox"></th>
+                    <th>新闻ID</th>
+                    <th>标题</th>
+                    <th>作者</th>
+                    <th>来源</th>
+                    <th>发布时间<a href="javascript:sort('reldt');"><span class="glyphicon glyphicon-arrow-down" id="reldt"></span></a></th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            <#list List as info>
+                <tr>
+                    <td><input class="checkbox" type="checkbox" name="an"></td>
+                    <td>${info.id}</td>
+                    <td>${info.title}</td>
+                    <td>${(info.author)!''}</td>
+                    <td>${(info.source)!''}</td>
+                    <td><#if info.release_date?exists>${info.release_date?string("yyyy-MM-dd")}</#if></td>
+                    <td><a href="javascript:toEditNews();">[修改]</a> </td>
+                </tr>
+             </#list>
+
+                <tr class="table-bordered table_bottom">
+                    <td colspan="7"><a class="btn btn-primary" href="#" role="button" style="width: 100px;">删除</a> </td>
+                </tr>
+            </tbody>
+        </table>
+		<@Pagination/>
+    </div>
+    <div class="hidden_div" id="pageNow">${pageNow}</div>
+    <div class="hidden_div" id="pageSize">${pageSize}</div>
+    <div class="hidden_div" id="sortWord">${sortWord}</div>
+    <form action="findNews.do" id="search_form" method="post">
+        <input type="hidden" name="option"/>
+        <input type="hidden" name="keyWord" />
+        <input type="hidden" name="startdt" />
+        <input type="hidden" name="enddt" />
+        <input type="hidden" name="pageSize" />
+        <input type="hidden" name="pageNow" />
+    </form>
+</body>
+</html>

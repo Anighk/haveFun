@@ -11,9 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.shfb.common.util.Constant;
+
 @Entity
 @org.hibernate.annotations.Entity(dynamicInsert=true,dynamicUpdate=true)  
-@Table(name = "admin_users")
+@Table(name = Constant.TABLE_USERS)
 @SequenceGenerator(name="sequsers",sequenceName="sequsersid",allocationSize=1)
 public class Users implements Serializable {
 	private static final long serialVersionUID = 1L;

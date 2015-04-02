@@ -1,8 +1,8 @@
 package com.shfb.common.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,19 +14,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.mail.internet.MimeUtility;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.shfb.common.entity.Users;
 
 public class BaseUtil {
 	private static String driver = ConfigManager.getKeyValue("jdbc.driverClassName");
@@ -260,79 +259,48 @@ public class BaseUtil {
 		modelMap.addAttribute("pageSize",pageSize);
 		return modelMap;
 	}
-    /**国别编号的翻译*/
-	public static String getType(String typeCode){
-		Map<String,String> map=new HashMap<String,String>();
-		map.put(Constant.T00,Constant.T00_FMGB);
-		map.put(Constant.T01,Constant.T01_SYXX);
-		map.put(Constant.T02,Constant.T02_WGSJ);
-		map.put(Constant.T03,Constant.T03_FMSQ);
-		map.put(Constant.T04,Constant.T04_US);
-		map.put(Constant.T05,Constant.T05_JP);
-		map.put(Constant.T06,Constant.T06_KR);
-		map.put(Constant.T07,Constant.T07_GB);
-		map.put(Constant.T08,Constant.T08_FR);
-		map.put(Constant.T09,Constant.T09_CH);
-		map.put(Constant.T10,Constant.T10_DE);
-		map.put(Constant.T11,Constant.T11_RU);
-		map.put(Constant.T12,Constant.T12_EPO);
-		map.put(Constant.T13,Constant.T13_WIPO);
-		map.put(Constant.T14,Constant.T14_AU);
-		map.put(Constant.T15,Constant.T15_CA);
-		map.put("","全部");
-		if(map.get(typeCode)==null){
-			return typeCode;	
-		}else{
-		 return map.get(typeCode);
+	
+	/**生成图片存储相对路径*/
+	public static String getYearMouthPath(){
+		String timeStr = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/");// 设置日期格式
+		timeStr = sdf.format(new Date());
+		return timeStr;
+	}
+	
+	/**存储图片并返回图片存储路径*/
+	public static String saveImgAndReturnPath(MultipartFile myfile){
+		String myfilename=myfile.getOriginalFilename();
+		if(myfilename.isEmpty()){
+			return "";
 		}
-	}
-	
-	public static String getAnlsName(String anlsType){
-		Map<String,String> map=new HashMap<String,String>();
-		map.put(Constant.AD,Constant.AD_);
-		map.put(Constant.PD,Constant.PD_);
-		map.put(Constant.IPC1,Constant.IPC1_);
-		map.put(Constant.IPC3,Constant.IPC3_);
-		map.put(Constant.IPC4,Constant.IPC4_);
-		map.put(Constant.CITING,Constant.CITING_);
-		map.put(Constant.CITED,Constant.CITED_);
-		map.put(Constant.PA,Constant.PA_);
-		map.put(Constant.INN,Constant.INN_);
-		map.put(Constant.AGC,Constant.AGC_);
-		map.put(Constant.AGT,Constant.AGT_);
-		map.put(Constant.NP,Constant.NP_);
-		map.put(Constant.LAW,Constant.LAW_);
-		return map.get(anlsType);
-	}
-	
-	/**法律状态的判定*/
-	public static String lawStatus(String lvl){
-		String ls=null;
-		if(lvl.indexOf("终止")>-1||lvl.indexOf("放弃")>-1||lvl.indexOf("驳回")>-1||lvl.indexOf("撤回")>-1||lvl.indexOf("无效")>-1||"失效".equals(lvl)){
-			ls="<img src='images/wx.png' width='43' height='19' />";
-		}else if(lvl.indexOf("实质审查")>-1||"公开".equals(lvl)||"审定".equals(lvl)||"在审".equals(lvl)){
-			ls="<img src='images/zs.png' width='43' height='19' />";
-		}else if("授权".equals(lvl)|"有效".equals(lvl)||lvl.indexOf("变更")>-1||lvl.indexOf("转移")>-1||lvl.indexOf("专利公报更正")>-1){
-			ls="<img src='images/yx.png' width='43' height='19' />";
-		}else{
-			ls="";
+		String rootpath=ConfigManager.getKeyValue("img.rootpath");
+		String filename=new SimpleDateFormat("yyyyMMddHHmmss").format(new Date(System 
+				.currentTimeMillis())) +getFileNameExt(myfilename);
+		String path= getYearMouthPath();
+        File f = new File(rootpath+"/"+path);
+        // 创建文件夹
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+		File file=new File(rootpath+"/"+path,filename);
+		try {
+			FileUtils.copyInputStreamToFile(myfile.getInputStream(), file);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "";
 		}
-		return ls;
+		return path+filename;
 	}
 	
+	/**得到文件的扩展名*/
+	public static String getFileNameExt(String filename){
+		return filename.substring(filename.lastIndexOf("."));
+	}
 	
 	public static void main(String[] args) throws UnsupportedEncodingException{
-		Users user=new Users();
-		user.setId(2);
-		user.setUsername("abc");
-		user.setTruename("用户真名");
-		user.setAttr("0");
-		String userStr=getJsonFromObject(user);
-		String userEncode=URLEncoder.encode(userStr, "utf-8");
-		String userDecode=URLDecoder.decode(userEncode, "utf-8");
-		System.out.println(userStr);
-		System.out.println(userEncode);
-		System.out.println(userDecode);
-//		System.out.println(getType("00"));
+//		System.out.println(getYearMouthPath());
+		String filename="abc.txt";
+		System.out.println(getFileNameExt(filename));
 	}
 }
