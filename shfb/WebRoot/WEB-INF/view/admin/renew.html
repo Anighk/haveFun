@@ -19,7 +19,12 @@
             var rn=parent.document.getElementById("rn");
             rn.userid.value="${info.user_id}";
             rn.renewyear.value=document.getElementById("renewyear").value;
-            rn.renewto.value=document.getElementById("renewto").value;
+            var renewto=document.getElementById("renewto").value;
+            if(renewto==""){
+        		layer.alert("续费终止日期不能为空！",0);
+        		return;
+            }
+            rn.renewto.value=renewto;
             rn.remark.value=document.getElementById("remark").value;
             rn.submit();
             var index=parent.layer.getFrameIndex(window.name);

@@ -69,6 +69,15 @@
                             var ue = UE.getEditor('content');
                             function confirm(){
                                 var text=ue.getContent();
+                                var title=document.getElementById("title").value;
+                                if(title==""){
+                            		layer.alert("新闻标题不能为空！",0);
+                            		return;
+                                }
+                                if(text==""){
+                            		layer.alert("新闻内容不能为空！",0);
+                            		return;
+                                }
                                 var edt=document.getElementById("edt");
                                 edt.content.value=text;
                                 edt.title.value=document.getElementById("title").value;
