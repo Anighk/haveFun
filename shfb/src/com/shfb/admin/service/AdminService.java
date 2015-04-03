@@ -36,5 +36,7 @@ public interface AdminService {
 	public NewsDTO findNews(String strWhere,Integer pageNow,Integer pageSize);
 	//编辑新闻
 	public NewsDTO editNews(News nw,String strWhere,Integer pageNow,Integer pageSize);
+	//删除新闻
+	public NewsDTO deleteNews(List<News> list,String strWhere,Integer pageNow,Integer pageSize);
 	
 }

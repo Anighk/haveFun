@@ -12,6 +12,8 @@ import com.shfb.common.entity.Members;
 import com.shfb.common.entity.News;
 import com.shfb.common.entity.Renew;
 import com.shfb.common.entity.Users;
+import com.shfb.common.util.BaseUtil;
+import com.shfb.common.util.ConfigManager;
 import com.shfb.common.util.Constant;
 
 public class AdminDaoImpl implements AdminDao {
@@ -138,6 +140,22 @@ public class AdminDaoImpl implements AdminDao {
 		String count=baseDao.query(hql).get(0).toString();
 		dto.setTotal(Integer.parseInt(count));
 		return dto;
+	}
+	
+	@Override
+	public boolean deleteNews(News nw) {
+		String imgPath=nw.getImgpath();
+		if(imgPath!=null && !"".equals(imgPath)){
+			String rootPath=ConfigManager.getKeyValue("img.rootpath");
+			String path=rootPath+"/"+imgPath;
+			BaseUtil.deleteFile(path);
+		}
+		try{
+			baseDao.delete(nw);
+		}catch(Exception e){
+			return false;
+		}
+		return true;
 	}
 	
 

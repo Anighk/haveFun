@@ -32,4 +32,6 @@ public interface AdminDao {
 	public boolean saveNews(News nw);
 	//新闻检索
 	public NewsDTO findNews(String strWhere,Integer pageNow,Integer pageSize);
+	//删除用户
+	public boolean deleteNews(News nw);
 }

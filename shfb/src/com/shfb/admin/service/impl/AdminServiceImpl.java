@@ -93,5 +93,12 @@ public class AdminServiceImpl implements AdminService {
 		}
 		return dto;
 	}
+	@Override
+	public NewsDTO deleteNews(List<News> list,String strWhere,Integer pageNow,Integer pageSize) {
+		for(News n:list){
+			adminDao.deleteNews(n);
+		}
+		return adminDao.findNews(strWhere,pageNow,pageSize);
+	}
 
 }

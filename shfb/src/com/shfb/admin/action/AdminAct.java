@@ -1,6 +1,8 @@
 package com.shfb.admin.action;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -188,26 +190,36 @@ public class AdminAct {
 	}
 	
 	
-//	@RequestMapping("/deleteMember.do")
-//	public String deleteUser(HttpServletRequest request,ModelMap modelMap){
-//		Integer pageNow=Integer.parseInt(request.getParameter("pageNow")==null||request.getParameter("pageNow")==""?"1":request.getParameter("pageNow"));
-//		Integer pageSize=Integer.parseInt(request.getParameter("pageSize")==null||request.getParameter("pageSize")==""?"10":request.getParameter("pageSize"));
-//		String keyStr=request.getParameter("keyStr");
-//		List<Members> list=new ArrayList<Members>();
-//		for (String e : keyStr.split(";")) {
-//			Members m=new Members();
-//			m.setUser_id(e);
-//			list.add(m);
-//		}
-//		MemberDTO dto=adminService.deleteUser(list);
-//		modelMap=paginate(dto.getTotal(),pageSize,pageNow,modelMap);
-//		modelMap.addAttribute("List",dto.getmList());
-//		modelMap.addAttribute("total",dto.getTotal());
-//		modelMap.addAttribute("option","");
-//		modelMap.addAttribute("keyWord","");
-//		modelMap.addAttribute("pmen",Integer.parseInt(PWD_MAX_ERROR_NUM));
-//		return Constant.VIEW_PATH+"admin/amember.html";
-//	}
+	@RequestMapping("/deleteNews.do")
+	public String deleteNews(HttpServletRequest request,ModelMap modelMap){
+		Integer pageNow=Integer.parseInt(request.getParameter("pageNow")==null||request.getParameter("pageNow")==""?"1":request.getParameter("pageNow"));
+		Integer pageSize=Integer.parseInt(request.getParameter("pageSize")==null||request.getParameter("pageSize")==""?"10":request.getParameter("pageSize"));
+		String option=request.getParameter("option");
+		String keyWord=request.getParameter("keyWord");
+		String startdt=request.getParameter("startdt");
+		String enddt=request.getParameter("enddt");
+		String sortWord=request.getParameter("sortWord");
+		String strWhere=getNewsCondition(option,keyWord,startdt,enddt,sortWord);
+		String keyStr=request.getParameter("keyStr");
+		List<News> list=new ArrayList<News>();
+		for (String e : keyStr.split(";")) {
+			News nw=new News();
+			String[] array=e.split(",");
+			nw.setId(Integer.parseInt(array[0]));
+			nw.setImgpath(array[1]);
+			list.add(nw);
+		}
+		NewsDTO dto=adminService.deleteNews(list,strWhere,pageNow,pageSize);
+		modelMap=paginate(dto.getTotal(),pageSize,pageNow,modelMap);
+		modelMap.addAttribute("List",dto.getList());
+		modelMap.addAttribute("total",dto.getTotal());
+		modelMap.addAttribute("option",option);
+		modelMap.addAttribute("keyWord",keyWord);
+		modelMap.addAttribute("startdt",startdt);
+		modelMap.addAttribute("enddt",enddt);
+		modelMap.addAttribute("sortWord",sortWord);
+		return Constant.VIEW_PATH+"news/index.html";
+	}
 	
 	@RequestMapping("/editMember.do")
 	public String editMembers(HttpServletRequest request,ModelMap modelMap){
