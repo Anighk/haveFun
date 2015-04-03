@@ -52,7 +52,7 @@
   </welcome-file-list>
       <error-page>
       <error-code>404</error-code>
-      <location>/error.html</location>
+      <location>/error404.html</location>
     </error-page>
 
  	<error-page>
