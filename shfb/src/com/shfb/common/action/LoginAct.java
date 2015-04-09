@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.google.code.kaptcha.Constants;
 import com.shfb.admin.rs.MemberDTO;
+import com.shfb.admin.rs.NewsDTO;
 import com.shfb.admin.service.AdminService;
 import com.shfb.common.entity.Users;
 import com.shfb.common.service.UsersService;
@@ -51,14 +52,23 @@ public class LoginAct {
 					Cookie c=new Cookie("user",userStr);
 					c.setPath("/");
 					response.addCookie(c);
-					MemberDTO dto=adminService.findUsers("1=1 order by nvl(to_char(reg_date,'yyyy-MM-dd'),'1000-01-01') desc", 1, 10);
-					modelMap=BaseUtil.paginate(dto.getTotal(), 10,1, modelMap);
-					modelMap.addAttribute("List",dto.getmList());
-					modelMap.addAttribute("total",dto.getTotal());
 					modelMap.addAttribute("option","");
 					modelMap.addAttribute("keyWord","");
-					modelMap.addAttribute("sortWord","nvl(to_char(reg_date,'yyyy-MM-dd'),'1000-01-01') desc");
-					return Constant.VIEW_PATH + "/admin/amember.html";
+					if("2".equals(user.getAttr())){
+						NewsDTO dto=adminService.findNews("1=1 order by edit_date desc", 1, 10);
+						modelMap=BaseUtil.paginate(dto.getTotal(),10,1,modelMap);
+						modelMap.addAttribute("List",dto.getList());
+						modelMap.addAttribute("total",dto.getTotal());
+						modelMap.addAttribute("sortWord","edit_date desc");
+						return Constant.VIEW_PATH+"news/index.html";
+					}else{
+						MemberDTO dto=adminService.findUsers("1=1 order by nvl(to_char(reg_date,'yyyy-MM-dd'),'1000-01-01') desc", 1, 10);
+						modelMap=BaseUtil.paginate(dto.getTotal(), 10,1, modelMap);
+						modelMap.addAttribute("List",dto.getmList());
+						modelMap.addAttribute("total",dto.getTotal());
+						modelMap.addAttribute("sortWord","nvl(to_char(reg_date,'yyyy-MM-dd'),'1000-01-01') desc");
+						return Constant.VIEW_PATH + "/admin/amember.html";
+					}
 				}
 		}else{
 			modelMap.addAttribute("info","用户名不存在!");
