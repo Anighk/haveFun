@@ -21,6 +21,10 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		if(!flag){
 			Cookie[] cookies = request.getCookies();
 			boolean loginflag=false;
+			if(cookies==null){
+				response.sendRedirect("login.html");
+				return false;
+			}
             for(Cookie c :cookies ){
             	if("user".equals(c.getName())){
             		loginflag=true;

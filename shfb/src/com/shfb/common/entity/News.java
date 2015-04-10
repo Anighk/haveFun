@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,6 +28,8 @@ public class News implements Serializable {
 	private String source;
 	private Date release_date;
 	private Date edit_date;
+	@Column(updatable=false)
+	private Date create_date;
 	private String imgpath;
 	private String content;
 	public Integer getId() {
@@ -64,6 +67,12 @@ public class News implements Serializable {
 	}
 	public void setEdit_date(Date edit_date) {
 		this.edit_date = edit_date;
+	}
+	public Date getCreate_date() {
+		return create_date;
+	}
+	public void setCreate_date(Date create_date) {
+		this.create_date = create_date;
 	}
 	public String getImgpath() {
 		return imgpath;

@@ -340,6 +340,7 @@ public class AdminAct {
 		nw.setSource(source);
 		nw.setContent(content);
 		nw.setEdit_date(new Date());
+		nw.setCreate_date(new Date());
 		if(reldt!=null){
 			reldt=reldt.replace("T"," ");
 			nw.setRelease_date(BaseUtil.StringToDate(reldt, "yyyy-MM-dd HH:mm"));
