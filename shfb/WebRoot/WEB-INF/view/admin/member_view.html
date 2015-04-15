@@ -27,8 +27,8 @@
                 <li class="li_title"><label>机器码：</label></li><li>${info.user_id}</li>
             </ul >
             <ul class="list-unstyled list-inline"><li class="li_title"><label>过期时间：</label></li><li><#if info.overdue_date?exists>${info.overdue_date?string("yyyy-MM-dd")}</#if></li></ul>
-            <ul class="list-unstyled list-inline"><li class="li_title"><label>用户名：</label></li><li>${info.nick_name}</li></ul>
-            <ul class="list-unstyled list-inline"><li class="li_title"><label>vip会员：</label></li><li><span class="glyphicon glyphicon-<#if info.isvip=='1'>ok<#else>remove</#if>"></span></li></ul>
+            <ul class="list-unstyled list-inline"><li class="li_title"><label>用户名：</label></li><li>${(info.nick_name)!''}</li></ul>
+            <ul class="list-unstyled list-inline"><li class="li_title"><label>vip会员：</label></li><li><span class="glyphicon glyphicon-<#if info.isvip?exists && info.isvip=='1'>ok<#else>remove</#if>"></span></li></ul>
             <ul class="list-unstyled list-inline">
                 <li class="li_title"><label>销售经理：</label></li>
                 <li>${(info.sales_manager)!''}</li>
