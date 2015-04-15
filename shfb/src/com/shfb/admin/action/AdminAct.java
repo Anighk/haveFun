@@ -206,9 +206,12 @@ public class AdminAct {
 			News nw=new News();
 			String[] array=e.split(",");
 			nw.setId(Integer.parseInt(array[0]));
-			nw.setImgpath(array[1]);
+			if(array.length>1){
+				nw.setImgpath(array[1]);
+			}
 			list.add(nw);
 		}
+		System.out.println("strWhere --> "+strWhere);
 		NewsDTO dto=adminService.deleteNews(list,strWhere,pageNow,pageSize);
 		modelMap=paginate(dto.getTotal(),pageSize,pageNow,modelMap);
 		modelMap.addAttribute("List",dto.getList());
@@ -354,7 +357,7 @@ public class AdminAct {
 		modelMap.addAttribute("total",dto.getTotal());
 		modelMap.addAttribute("option","");
 		modelMap.addAttribute("keyWord","");
-		modelMap.addAttribute("sortWord"," 1=1 order by edit_date desc");
+		modelMap.addAttribute("sortWord","edit_date desc");
 		return Constant.VIEW_PATH+"news/index.html";
 	}
 	
