@@ -15,6 +15,7 @@ import com.shfb.common.entity.Users;
 import com.shfb.common.util.BaseUtil;
 import com.shfb.common.util.ConfigManager;
 import com.shfb.common.util.Constant;
+import com.shfb.common.util.ImgUtil;
 
 public class AdminDaoImpl implements AdminDao {
 	private BaseDao baseDao;
@@ -148,7 +149,9 @@ public class AdminDaoImpl implements AdminDao {
 		if(imgPath!=null && !"".equals(imgPath)){
 			String rootPath=ConfigManager.getKeyValue("img.rootpath");
 			String path=rootPath+"/"+imgPath;
+			String destpath=rootPath+"/"+ImgUtil.getDestFilePath(imgPath);
 			BaseUtil.deleteFile(path);
+			BaseUtil.deleteFile(destpath);
 		}
 		try{
 			baseDao.delete(nw);

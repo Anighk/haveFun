@@ -23,6 +23,7 @@ import com.shfb.common.entity.News;
 import com.shfb.common.entity.Renew;
 import com.shfb.common.util.BaseUtil;
 import com.shfb.common.util.Constant;
+import com.shfb.common.util.ImgUtil;
 
 @Controller
 public class AdminAct {
@@ -351,6 +352,7 @@ public class AdminAct {
 			nw.setRelease_date(new Date());
 		}
 		nw.setImgpath(BaseUtil.saveImgAndReturnPath(myfile));
+		nw.setSimgpath(ImgUtil.imageResize(nw.getImgpath(), 80, 80));
 		NewsDTO dto=adminService.editNews(nw, " 1=1 order by edit_date desc",1,10);
 		modelMap=paginate(dto.getTotal(),10,1,modelMap);
 		modelMap.addAttribute("List",dto.getList());

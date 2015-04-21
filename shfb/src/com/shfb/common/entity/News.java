@@ -30,7 +30,10 @@ public class News implements Serializable {
 	private Date edit_date;
 	@Column(updatable=false)
 	private Date create_date;
+	@Column(updatable=false)
 	private String imgpath;
+	@Column(updatable=false)
+	private String simgpath;
 	private String content;
 	public Integer getId() {
 		return id;
@@ -79,6 +82,12 @@ public class News implements Serializable {
 	}
 	public void setImgpath(String imgpath) {
 		this.imgpath = imgpath;
+	}
+	public String getSimgpath() {
+		return simgpath;
+	}
+	public void setSimgpath(String simgpath) {
+		this.simgpath = simgpath;
 	}
 	public String getContent() {
 		return content;
