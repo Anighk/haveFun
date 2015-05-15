@@ -35,6 +35,7 @@ public class News implements Serializable {
 	@Column(updatable=false)
 	private String simgpath;
 	private String content;
+	private Integer click_num;
 	public Integer getId() {
 		return id;
 	}
@@ -94,6 +95,12 @@ public class News implements Serializable {
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	public Integer getClick_num() {
+		return click_num;
+	}
+	public void setClick_num(Integer click_num) {
+		this.click_num = click_num;
 	}
 	
 }

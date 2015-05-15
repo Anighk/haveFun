@@ -152,6 +152,7 @@
                     <th>作者</th>
                     <th>来源</th>
                     <th>发布时间<a href="javascript:sort('reldt');"><span class="glyphicon glyphicon-arrow-down" id="reldt"></span></a></th>
+                    <th>访问量</th>
                     <th>操作</th>
                 </tr>
             </thead>
@@ -164,6 +165,7 @@
                     <td>${(info.author)!''}</td>
                     <td>${(info.source)!''}</td>
                     <td><#if info.release_date?exists>${info.release_date?string("yyyy-MM-dd HH:mm")}</#if></td>
+                    <td>${(info.click_num)!0}</td>
                     <td><a href="toEditNews.do?id=${info.id}">[修改]</a> </td>
                 </tr>
              </#list>
